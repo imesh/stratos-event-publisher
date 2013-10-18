@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.imesh.samples</groupId>
+    <artifactId>apache-stratos-sample-event-publisher</artifactId>
+    <name>Apache Stratos Sample Event Publisher</name>
+    <version>1.0.0-SNAPSHOT</version>
+    <developers>
+        <developer>
+            <name>Imesh Gunaratne</name>
+            <email>imesh@apache.org</email>
+        </developer>
+    </developers>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.andes.wso2</groupId>
+            <artifactId>andes-client</artifactId>
+            <version>0.13.wso2v8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs.wso2</groupId>
+            <artifactId>geronimo-jms_1.1_spec</artifactId>
+            <version>1.1.0.wso2v1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.stratos</groupId>
+            <artifactId>org.apache.stratos.messaging</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
