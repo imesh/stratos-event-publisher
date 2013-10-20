@@ -21,7 +21,6 @@ package org.imesh.samples.apache.stratos.event.publisher;
 
 import org.apache.stratos.messaging.domain.topology.*;
 import org.apache.stratos.messaging.event.topology.*;
-import org.apache.stratos.messaging.message.TopologyEventMessage;
 
 import javax.jms.JMSException;
 import javax.naming.NamingException;
@@ -53,76 +52,72 @@ public class TopologyEvnetsPublisherMain {
     private static void sendTopologyEvents(TopicPublisher publisher) throws JMSException, NamingException, IOException, InterruptedException {
         Topology topology = new Topology();
 
-        Service service1 = new Service();
-        service1.setServiceName("AppServer");
+        // Application server service
+        Service service1 = new Service("AppServer");
         topology.addService(service1);
 
-        Cluster cluster1 = new Cluster();
-        cluster1.setClusterId("c1");
-        cluster1.setHostName("appserver.foo.org");
+        // Application server cluster 1
+        Cluster cluster1 = new Cluster(service1.getServiceName(), "c1");
+        cluster1.setHostName("esb.foo.org");
         cluster1.setTenantRange("1-*");
-
         service1.addCluster(cluster1);
 
-        Member member1 = new Member();
-        member1.setServiceName("AppServer");
-        member1.setClusterId("c1");
-        member1.setMemberId("m1");
-        member1.setHostName("192.168.1.112");
-        member1.addPort(new Port("http", 80, 8280));
-        member1.addPort(new Port("https", 90, 8290));
-        member1.setStatus(MemberStatus.Starting);
+        // Application server cluster 1 members
+        Member member1 = new Member(cluster1.getServiceName(), cluster1.getClusterId(), "m1");
+        member1.setMemberIp("10.0.0.1");
+        member1.addPort(new Port("http", 9769, 8280));
+        member1.addPort(new Port("https", 9449, 8290));
+        member1.setStatus(MemberStatus.Activated);
         cluster1.addMember(member1);
 
+        Member member2 = new Member(cluster1.getServiceName(), cluster1.getClusterId(), "m2");
+        member2.setMemberIp("10.0.0.2");
+        member2.addPort(new Port("http", 9770, 8280));
+        member2.addPort(new Port("https", 9450, 8290));
+        member2.setStatus(MemberStatus.Activated);
+        cluster1.addMember(member2);
+
+        Member member3 = new Member(cluster1.getServiceName(), cluster1.getClusterId(), "m3");
+        member3.setMemberIp("10.0.0.3");
+        member3.addPort(new Port("http", 9771, 8280));
+        member3.addPort(new Port("https", 9451, 8290));
+        member3.setStatus(MemberStatus.Activated);
+        cluster1.addMember(member3);
+
+        // Send complete topology event
         CompleteTopologyEvent event = new CompleteTopologyEvent();
         event.setTopology(topology);
-        TopologyEventMessage message = new TopologyEventMessage(event);
-        publisher.publish(message);
+        publisher.publish(event);
         Thread.sleep(TIME_INTERVAL);
 
-        ServiceCreatedEvent event1 = new ServiceCreatedEvent();
-        event1.setServiceName("ESB");
-        message = new TopologyEventMessage(event1);
-        publisher.publish(message);
+        // Send ESB service created event
+        ServiceCreatedEvent event1 = new ServiceCreatedEvent("ESB");
+        publisher.publish(event1);
         Thread.sleep(TIME_INTERVAL);
 
-        ClusterCreatedEvent event2 = new ClusterCreatedEvent();
-        event2.setServiceName("ESB");
-        event2.setClusterId("c1");
+        // Send ESB cluster c1 created event
+        ClusterCreatedEvent event2 = new ClusterCreatedEvent("ESB", "c1");
         event2.setHostName("esb.foo.org");
         event2.setTenantRange("1-*");
-        message = new TopologyEventMessage(event2);
-        publisher.publish(message);
+        publisher.publish(event2);
         Thread.sleep(TIME_INTERVAL);
 
-        MemberStartedEvent event3 = new MemberStartedEvent();
-        event3.setServiceName("ESB");
-        event3.setClusterId("c1");
-        event3.setMemberId("m1");
-        event3.setHostName("192.168.1.112");
-        event3.addPort(new Port("http", 80, 8280));
-        event3.addPort(new Port("https", 90, 8290));
-        message = new TopologyEventMessage(event3);
-        publisher.publish(message);
+        // Send ESB cluster c1 member m1 spawned event
+        MemberSpawnedEvent event3 = new MemberSpawnedEvent("ESB", "c1", "m1");
+        publisher.publish(event3);
         Thread.sleep(TIME_INTERVAL);
 
-        MemberStartedEvent event4 = new MemberStartedEvent();
-        event4.setServiceName("ESB");
-        event4.setClusterId("c1");
-        event4.setMemberId("m2");
-        event4.setHostName("192.168.1.112");
-        event4.addPort(new Port("http", 80, 8280));
-        event4.addPort(new Port("https", 90, 8290));
-        message = new TopologyEventMessage(event4);
-        publisher.publish(message);
+        // Send ESB cluster c1 member m1 started event
+        MemberStartedEvent event4 = new MemberStartedEvent("ESB", "c1", "m1");
+        publisher.publish(event4);
         Thread.sleep(TIME_INTERVAL);
 
-        MemberActivatedEvent event5 = new MemberActivatedEvent();
-        event5.setServiceName("ESB");
-        event5.setClusterId("c1");
-        event5.setMemberId("m1");
-        message = new TopologyEventMessage(event5);
-        publisher.publish(message);
+        // Send ESB cluster c1 member m1 activated event
+        MemberActivatedEvent event5 = new MemberActivatedEvent("ESB", "c1", "m1");
+        event5.setMemberIp("192.168.1.112");
+        event5.addPort(new Port("http", 80, 8280));
+        event5.addPort(new Port("https", 90, 8290));
+        publisher.publish(event5);
         Thread.sleep(TIME_INTERVAL);
     }
 }
