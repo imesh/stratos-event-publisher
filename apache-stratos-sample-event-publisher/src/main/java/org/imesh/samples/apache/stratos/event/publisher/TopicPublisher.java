@@ -21,6 +21,7 @@ package org.imesh.samples.apache.stratos.event.publisher;
 
 import com.google.gson.Gson;
 import org.apache.stratos.messaging.event.Event;
+import org.apache.stratos.messaging.util.Constants;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
@@ -67,13 +68,14 @@ public class TopicPublisher {
     public void publish(Event event) throws NamingException, JMSException, IOException {
         Gson gson = new Gson();
         String json = gson.toJson(event);
-        publish(json);
+        publish(json, event.getClass().getName());
     }
 
-    public void publish(Object message) throws NamingException, JMSException, IOException {
+    private void publish(Object message, String eventClassName) throws NamingException, JMSException, IOException {
         // Send message
         if (message instanceof String) {
             TextMessage textMessage = topicSession.createTextMessage((String) message);
+            textMessage.setStringProperty(Constants.EVENT_CLASS_NAME, eventClassName);
             javax.jms.TopicPublisher topicPublisher = topicSession.createPublisher(topic);
             topicPublisher.publish(textMessage);
 
