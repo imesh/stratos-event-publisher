@@ -57,7 +57,7 @@ public class TopologyEvnetsPublisherMain {
         topology.addService(service1);
 
         // Application server cluster 1
-        Cluster cluster1 = new Cluster(service1.getServiceName(), "c1");
+        Cluster cluster1 = new Cluster(service1.getServiceName(), "c1", "p1");
         cluster1.setHostName("appserver.foo.org");
         cluster1.setTenantRange("1-*");
         service1.addCluster(cluster1);
@@ -103,7 +103,7 @@ public class TopologyEvnetsPublisherMain {
         Thread.sleep(TIME_INTERVAL);
 
         // Send ESB cluster c1 member m1 spawned event
-        InstanceSpawnedEvent event3 = new InstanceSpawnedEvent("ESB", "c1", "m1");
+        InstanceSpawnedEvent event3 = new InstanceSpawnedEvent("ESB", "c1", "m1", "p1");
         publisher.publish(event3);
         Thread.sleep(TIME_INTERVAL);
 
@@ -114,7 +114,7 @@ public class TopologyEvnetsPublisherMain {
 
         // Send ESB cluster c1 member m1 activated event
         MemberActivatedEvent event5 = new MemberActivatedEvent("ESB", "c1", "m1");
-        event5.setMemberIp("192.168.1.112");
+        event5.setMemberIp("google.lk");
         event5.addPort(new Port("http", 80, 8280));
         event5.addPort(new Port("https", 90, 8290));
         publisher.publish(event5);
