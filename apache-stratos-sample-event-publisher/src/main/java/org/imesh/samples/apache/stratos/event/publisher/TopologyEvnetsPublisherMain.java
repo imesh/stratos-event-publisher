@@ -54,8 +54,8 @@ public class TopologyEvnetsPublisherMain {
         Topology topology = new Topology();
 
         Service service1 = generateService(topology);
-        Cluster cluster = generateCluster(service1, "host1", " dep-pol1", "auto-scl-pol1");
-        for(int i=0 ; i < 10; i++)    {
+        Cluster cluster = generateCluster(service1, "foo.org", " dep-pol1", "auto-scl-pol1");
+        for(int i=0 ; i < 1; i++)    {
             generateMember(cluster, "network-partition1", "cloud-partition1");
         }
 
@@ -67,8 +67,7 @@ public class TopologyEvnetsPublisherMain {
 
     private static Service generateService(Topology topology) {
         Service service = new Service("service-" + UUID.randomUUID().toString(), ServiceType.SingleTenant);
-        service.addPort(new Port("http", 9280, 8280));
-        service.addPort(new Port("https", 9282, 8282));
+        service.addPort(new Port("http", 8080, 9080));
         topology.addService(service);
         return service;
     }
@@ -85,7 +84,9 @@ public class TopologyEvnetsPublisherMain {
     private static Member generateMember(Cluster cluster, String networkPartitionId, String partitionId) {
         int instance = cluster.getMembers().size() + 1;
         Member member = new Member(cluster.getServiceName(), cluster.getClusterId(), networkPartitionId, partitionId, cluster.getClusterId() + "-member-" + instance);
-        member.setMemberIp("10.0.0." + instance);
+        member.setMemberIp("127.0.0.1");
+        member.setMemberPublicIp("127.0.0.1");
+        member.addPort(new Port("http", 8080, 9080));
         member.setStatus(MemberStatus.Activated);
         cluster.addMember(member);
         return member;
