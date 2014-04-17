@@ -20,6 +20,7 @@
 package org.imesh.samples.apache.stratos.event;
 
 import org.imesh.samples.apache.stratos.event.generator.EventGenerator;
+import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
 
 /**
  * Run this main class to send a set of sample topology events.
@@ -27,7 +28,28 @@ import org.imesh.samples.apache.stratos.event.generator.EventGenerator;
 public class Main {
 
     public static void main(String[] args) {
-        EventGenerator generator = new EventGenerator();
-        generator.execute();
+        EventGenerator generator = new EventGenerator("topology", 100000);
+        Thread generatorThread = new Thread(generator);
+        generatorThread.start();
+
+        EventReceiver receiver = new EventReceiver("topology");
+        Thread receiverThread = new Thread(receiver);
+        receiverThread.start();
+
+        receiver = new EventReceiver("topology");
+        receiverThread = new Thread(receiver);
+        receiverThread.start();
+
+        receiver = new EventReceiver("topology");
+        receiverThread = new Thread(receiver);
+        receiverThread.start();
+
+        receiver = new EventReceiver("topology");
+        receiverThread = new Thread(receiver);
+        receiverThread.start();
+
+        receiver = new EventReceiver("topology");
+        receiverThread = new Thread(receiver);
+        receiverThread.start();
     }
 }

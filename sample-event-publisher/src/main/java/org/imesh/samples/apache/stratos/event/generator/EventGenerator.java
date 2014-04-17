@@ -16,17 +16,24 @@ import java.util.UUID;
 /**
  * Event generator.
  */
-public class EventGenerator {
+public class EventGenerator implements Runnable {
     private static final Log log = LogFactory.getLog(EventGenerator.class);
-    private static String TOPIC_NAME = "topology";
-    private static long TIME_INTERVAL = 4000; // 4 Seconds
+    private static long TIME_INTERVAL = 10;
 
-    public void execute() {
+    private String topicName;
+    private int count;
+
+    public EventGenerator(String topicName, int count) {
+        this.topicName = topicName;
+        this.count = count;
+    }
+
+    public void run() {
         URL path = getClass().getResource("/");
         System.setProperty("jndi.properties.dir", path.getFile());
-        EventPublisher publisher = new EventPublisher(TOPIC_NAME);
+        EventPublisher publisher = new EventPublisher(topicName);
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < count; i++) {
             try {
                 log.info("Generating sample event...");
                 Event event = generateCompleteTopologyEvent();

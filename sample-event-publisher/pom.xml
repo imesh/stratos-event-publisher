@@ -15,7 +15,7 @@
         </developer>
     </developers>
 
-    <repositories>
+    <!-- repositories>
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>
@@ -26,9 +26,9 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-    </repositories>
+    </repositories -->
     <dependencies>
-        <dependency>
+        <!-- dependency>
             <groupId>org.wso2.andes.wso2</groupId>
             <artifactId>andes-client</artifactId>
             <version>0.13.wso2v8</version>
@@ -37,6 +37,26 @@
             <groupId>org.apache.geronimo.specs.wso2</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
             <version>1.1.0.wso2v1</version>
+        </dependency -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>5.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jms_1.1_spec</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
