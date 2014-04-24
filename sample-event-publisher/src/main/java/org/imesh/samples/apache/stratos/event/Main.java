@@ -19,6 +19,7 @@
 
 package org.imesh.samples.apache.stratos.event;
 
+import org.apache.stratos.messaging.util.Constants;
 import org.imesh.samples.apache.stratos.event.generator.EventGenerator;
 import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
 
@@ -28,27 +29,27 @@ import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
 public class Main {
 
     public static void main(String[] args) {
-        EventGenerator generator = new EventGenerator("topology", 100000);
+        EventGenerator generator = new EventGenerator(Constants.TOPOLOGY_TOPIC, 100000);
         Thread generatorThread = new Thread(generator);
         generatorThread.start();
 
-        EventReceiver receiver = new EventReceiver("topology");
+        EventReceiver receiver = new EventReceiver(Constants.TOPOLOGY_TOPIC);
         Thread receiverThread = new Thread(receiver);
         receiverThread.start();
 
-        receiver = new EventReceiver("topology");
+        receiver = new EventReceiver(Constants.INSTANCE_NOTIFIER_TOPIC);
         receiverThread = new Thread(receiver);
         receiverThread.start();
 
-        receiver = new EventReceiver("topology");
+        receiver = new EventReceiver(Constants.INSTANCE_STATUS_TOPIC);
         receiverThread = new Thread(receiver);
         receiverThread.start();
 
-        receiver = new EventReceiver("topology");
+        receiver = new EventReceiver(Constants.HEALTH_STAT_TOPIC);
         receiverThread = new Thread(receiver);
         receiverThread.start();
 
-        receiver = new EventReceiver("topology");
+        receiver = new EventReceiver(Constants.TENANT_TOPIC);
         receiverThread = new Thread(receiver);
         receiverThread.start();
     }
