@@ -3,9 +3,11 @@ package org.imesh.samples.apache.stratos.event.generator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.stratos.messaging.broker.publish.EventPublisher;
+import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
 import org.apache.stratos.messaging.domain.topology.*;
 import org.apache.stratos.messaging.event.Event;
 import org.apache.stratos.messaging.event.topology.CompleteTopologyEvent;
+import org.apache.stratos.messaging.util.Constants;
 
 import javax.jms.JMSException;
 import javax.naming.NamingException;
@@ -31,7 +33,8 @@ public class EventGenerator implements Runnable {
     public void run() {
         URL path = getClass().getResource("/");
         System.setProperty("jndi.properties.dir", path.getFile());
-        EventPublisher publisher = new EventPublisher(topicName);
+        //EventPublisher publisher = new EventPublisher(topicName);
+        EventPublisher publisher = EventPublisherPool.getPublisher(Constants.INSTANCE_STATUS_TOPIC);
 
         for(int i = 0; i < count; i++) {
             try {
