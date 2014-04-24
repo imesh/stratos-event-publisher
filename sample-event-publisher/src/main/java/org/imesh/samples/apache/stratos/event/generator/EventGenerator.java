@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class EventGenerator implements Runnable {
     private static final Log log = LogFactory.getLog(EventGenerator.class);
-    private static long TIME_INTERVAL = 10;
+    private static long TIME_INTERVAL = 5000;
 
     private String topicName;
     private int count;
@@ -33,8 +33,7 @@ public class EventGenerator implements Runnable {
     public void run() {
         URL path = getClass().getResource("/");
         System.setProperty("jndi.properties.dir", path.getFile());
-        //EventPublisher publisher = new EventPublisher(topicName);
-        EventPublisher publisher = EventPublisherPool.getPublisher(Constants.INSTANCE_STATUS_TOPIC);
+        EventPublisher publisher = EventPublisherPool.getPublisher(Constants.TOPOLOGY_TOPIC);
 
         for(int i = 0; i < count; i++) {
             try {
