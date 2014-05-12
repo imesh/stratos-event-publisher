@@ -20,8 +20,11 @@
 package org.imesh.samples.apache.stratos.event;
 
 import org.apache.stratos.messaging.util.Constants;
-import org.imesh.samples.apache.stratos.event.generator.EventGenerator;
+import org.imesh.samples.apache.stratos.event.generator.TenantEventGenerator;
+import org.imesh.samples.apache.stratos.event.generator.TopologyEventGenerator;
 import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
+
+import java.net.URL;
 
 /**
  * Run this main class to send a set of sample topology events.
@@ -29,9 +32,17 @@ import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
 public class Main {
 
     public static void main(String[] args) {
-        EventGenerator generator = new EventGenerator(Constants.TOPOLOGY_TOPIC, 100000);
-        Thread generatorThread = new Thread(generator);
+
+        URL path = Main.class.getResource("/");
+        System.setProperty("jndi.properties.dir", path.getFile());
+
+        TopologyEventGenerator topologyEventGenerator = new TopologyEventGenerator(1);
+        Thread generatorThread = new Thread(topologyEventGenerator);
         generatorThread.start();
+
+        TenantEventGenerator tenantEventGenerator = new TenantEventGenerator(1);
+        Thread tenantGeneratorThread = new Thread(tenantEventGenerator);
+        tenantGeneratorThread.start();
 
         EventReceiver receiver = new EventReceiver(Constants.TOPOLOGY_TOPIC);
         Thread receiverThread = new Thread(receiver);
@@ -47,7 +58,7 @@ public class Main {
 
         receiver = new EventReceiver(Constants.HEALTH_STAT_TOPIC);
         receiverThread = new Thread(receiver);
-        receiverThread.start();
+      //  receiverThread.start();
 
         receiver = new EventReceiver(Constants.TENANT_TOPIC);
         receiverThread = new Thread(receiver);
