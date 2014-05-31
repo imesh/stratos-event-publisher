@@ -1,4 +1,4 @@
-package org.imesh.samples.apache.stratos.event.receiver;
+package org.imesh.tools.stratos.event.receiver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

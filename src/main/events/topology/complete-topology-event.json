@@ -1,0 +1,223 @@
+{"topology": {
+    "serviceMap": {
+        "Service1": {
+            "serviceName": "Service1",
+            "serviceType": "SingleTenant",
+            "clusterIdClusterMap": {
+                "Service1-cluster1": {
+                    "serviceName": "Service1",
+                    "clusterId": "Service1-cluster1",
+                    "autoscalePolicyName": "auto-scl-pol1",
+                    "deploymentPolicyName": " dep-pol1",
+                    "hostNames": ["foo.org"],
+                    "tenantRange": "1-*",
+                    "isLbCluster": false,
+                    "memberMap": {
+                        "Service1-cluster1-member-2": {
+                            "serviceName": "Service1",
+                            "clusterId": "Service1-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service1-cluster1-member-2",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service1-cluster1-member-3": {
+                            "serviceName": "Service1",
+                            "clusterId": "Service1-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service1-cluster1-member-3",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service1-cluster1-member-4": {
+                            "serviceName": "Service1",
+                            "clusterId": "Service1-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service1-cluster1-member-4",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service1-cluster1-member-5": {
+                            "serviceName": "Service1",
+                            "clusterId": "Service1-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service1-cluster1-member-5",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service1-cluster1-member-1": {
+                            "serviceName": "Service1",
+                            "clusterId": "Service1-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service1-cluster1-member-1",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        }
+                    }
+                }
+            },
+            "portMap": {
+                "9080": {
+                    "protocol": "http",
+                    "value": 8080,
+                    "proxy": 9080
+                }
+            }
+        },
+        "Service2": {
+            "serviceName": "Service2",
+            "serviceType": "SingleTenant",
+            "clusterIdClusterMap": {
+                "Service2-cluster1": {
+                    "serviceName": "Service2",
+                    "clusterId": "Service2-cluster1",
+                    "autoscalePolicyName": "auto-scl-pol1",
+                    "deploymentPolicyName": " dep-pol1",
+                    "hostNames": ["foo.org"],
+                    "tenantRange": "1-*",
+                    "isLbCluster": false,
+                    "memberMap": {
+                        "Service2-cluster1-member-5": {
+                            "serviceName": "Service2",
+                            "clusterId": "Service2-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service2-cluster1-member-5",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service2-cluster1-member-2": {
+                            "serviceName": "Service2",
+                            "clusterId": "Service2-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service2-cluster1-member-2",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service2-cluster1-member-1": {
+                            "serviceName": "Service2",
+                            "clusterId": "Service2-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service2-cluster1-member-1",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service2-cluster1-member-4": {
+                            "serviceName": "Service2",
+                            "clusterId": "Service2-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service2-cluster1-member-4",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        },
+                        "Service2-cluster1-member-3": {
+                            "serviceName": "Service2",
+                            "clusterId": "Service2-cluster1",
+                            "networkPartitionId": "network-partition1",
+                            "partitionId": "cloud-partition1",
+                            "memberId": "Service2-cluster1-member-3",
+                            "portMap": {
+                                "9080": {
+                                    "protocol": "http",
+                                    "value": 8080,
+                                    "proxy": 9080
+                                }
+                            },
+                            "memberPublicIp": "127.0.0.1",
+                            "status": "Activated",
+                            "memberIp": "127.0.0.1"
+                        }
+                    }
+                }
+            },
+            "portMap": {
+                "9080": {
+                    "protocol": "http",
+                    "value": 8080,
+                    "proxy": 9080
+                }
+            }
+        }
+    },
+    "initialized": false
+}}

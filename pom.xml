@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.imesh.samples</groupId>
-    <artifactId>apache-stratos-sample-event-publisher</artifactId>
-    <name>Apache Stratos Sample Event Publisher</name>
+    <artifactId>stratos-event-publisher</artifactId>
+    <name>Stratos Event Publisher</name>
+    <description>A sample event publisher for publishing events to stratos message broker topics.</description>
     <version>1.0.0-SNAPSHOT</version>
     <developers>
         <developer>
@@ -15,18 +16,6 @@
         </developer>
     </developers>
 
-    <!-- repositories>
-        <repository>
-            <id>wso2-nexus</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-        </repository>
-    </repositories -->
     <dependencies>
         <!-- dependency>
             <groupId>org.wso2.andes.wso2</groupId>
@@ -74,4 +63,42 @@
             <version>4.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.apache.stratos.haproxy.extension.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/bin.xml</descriptor>
+                    </descriptors>
+                    <archiverConfig>
+                        <fileMode>420</fileMode>
+                        <directoryMode>493</directoryMode>
+                        <defaultDirectoryMode>493</defaultDirectoryMode>
+                    </archiverConfig>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

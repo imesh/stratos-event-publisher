@@ -17,10 +17,14 @@
  * under the License.
  */
 
-package org.imesh.samples.apache.stratos.event;
+package org.imesh.tools.stratos.event;
 
-import org.imesh.samples.apache.stratos.event.generator.EventGenerator;
-import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
+import org.apache.log4j.PropertyConfigurator;
+import org.imesh.tools.stratos.event.generator.TenantEventGenerator;
+import org.imesh.tools.stratos.event.generator.TopologyEventGenerator;
+import org.imesh.tools.stratos.event.receiver.EventReceiver;
+
+import java.io.File;
 
 /**
  * Run this main class to send a set of sample topology events.
@@ -28,28 +32,20 @@ import org.imesh.samples.apache.stratos.event.receiver.EventReceiver;
 public class Main {
 
     public static void main(String[] args) {
-        EventGenerator generator = new EventGenerator("topology", 100000);
-        Thread generatorThread = new Thread(generator);
-        generatorThread.start();
+        // Configure log4j properties
+        PropertyConfigurator.configure(System.getProperty("log4j.properties.file.path", "src/main/conf/log4j.properties"));
+        System.setProperty("jndi.properties.dir", System.getProperty("jndi.properties.dir", "src/main/conf"));
+
+        TopologyEventGenerator topologyEventGenerator = new TopologyEventGenerator("topology", 1);
+        Thread topologyEventGeneratorThread = new Thread(topologyEventGenerator);
+        topologyEventGeneratorThread.start();
 
         EventReceiver receiver = new EventReceiver("topology");
         Thread receiverThread = new Thread(receiver);
         receiverThread.start();
 
-        receiver = new EventReceiver("topology");
-        receiverThread = new Thread(receiver);
-        receiverThread.start();
-
-        receiver = new EventReceiver("topology");
-        receiverThread = new Thread(receiver);
-        receiverThread.start();
-
-        receiver = new EventReceiver("topology");
-        receiverThread = new Thread(receiver);
-        receiverThread.start();
-
-        receiver = new EventReceiver("topology");
-        receiverThread = new Thread(receiver);
-        receiverThread.start();
+        TenantEventGenerator tenantEventGenerator = new TenantEventGenerator("tenant", 1);
+        Thread tenantEventGeneratorThread = new Thread(tenantEventGenerator);
+        tenantEventGeneratorThread.start();
     }
 }
