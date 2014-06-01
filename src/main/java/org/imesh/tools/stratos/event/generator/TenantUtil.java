@@ -29,8 +29,13 @@ public class TenantUtil {
                 clusterIds.add(cluster.getClusterId());
             }
             Subscription subscription = new Subscription(service.getServiceName(), clusterIds);
+            subscription.addSubscriptionDomain("foo1.org", "carbon/t/foo1.org");
+            subscription.addSubscriptionDomain("foo2.org", "/some/app/context");
+            subscription.addSubscriptionDomain("foo3.org", "/some/app/context/");
             tenant2.addSubscription(subscription);
         }
+        tenants.add(tenant2);
+
         return tenants;
     }
 }

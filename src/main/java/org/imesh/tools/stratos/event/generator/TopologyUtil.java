@@ -32,7 +32,7 @@ public class TopologyUtil {
 
     private static Service generateService(Topology topology, String serviceName) {
         Service service = new Service(serviceName, ServiceType.SingleTenant);
-        service.addPort(new Port("http", 8080, 9080));
+        service.addPort(new Port("https", 9448, 8243));
         topology.addService(service);
         return service;
     }
@@ -55,7 +55,7 @@ public class TopologyUtil {
         Member member = new Member(cluster.getServiceName(), cluster.getClusterId(), networkPartitionId, partitionId, cluster.getClusterId() + "-member-" + instance);
         member.setMemberIp("127.0.0.1");
         member.setMemberPublicIp("127.0.0.1");
-        member.addPort(new Port("http", 8080, 9080));
+        member.addPort(new Port("https", 9448, 8243));
         member.setStatus(MemberStatus.Activated);
         cluster.addMember(member);
         return member;

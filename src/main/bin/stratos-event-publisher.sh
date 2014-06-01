@@ -31,4 +31,4 @@ properties="-Djndi.properties.dir=${script_path}/../conf
 # Uncomment below line to enable remote debugging
 #debug="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
 
-java -cp "${class_path}" ${properties} ${debug} org.apache.stratos.haproxy.extension.Main $*
+java -cp "${class_path}" ${properties} ${debug} org.imesh.tools.stratos.event.Main $*

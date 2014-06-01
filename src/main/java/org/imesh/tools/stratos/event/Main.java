@@ -40,9 +40,9 @@ public class Main {
         Thread topologyEventGeneratorThread = new Thread(topologyEventGenerator);
         topologyEventGeneratorThread.start();
 
-        EventReceiver receiver = new EventReceiver("topology");
-        Thread receiverThread = new Thread(receiver);
-        receiverThread.start();
+//        EventReceiver receiver = new EventReceiver("topology");
+//        Thread receiverThread = new Thread(receiver);
+//        receiverThread.start();
 
         TenantEventGenerator tenantEventGenerator = new TenantEventGenerator("tenant", 1);
         Thread tenantEventGeneratorThread = new Thread(tenantEventGenerator);
