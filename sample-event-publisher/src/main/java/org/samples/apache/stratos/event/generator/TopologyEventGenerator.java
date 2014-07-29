@@ -1,4 +1,23 @@
-package org.imesh.samples.apache.stratos.event.generator;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.samples.apache.stratos.event.generator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +35,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 /**
- * Event generator.
+ * Topology Event generator.
  */
 public class TopologyEventGenerator implements Runnable {
     private static final Log log = LogFactory.getLog(TopologyEventGenerator.class);
@@ -50,14 +69,19 @@ public class TopologyEventGenerator implements Runnable {
                 ClusterCreatedEvent clusterCreatedEvent = new ClusterCreatedEvent("myTestService", "myTestCluster", cluster1);
                 topologyPublisher.publish(clusterCreatedEvent);
 
-                InstanceSpawnedEvent instanceSpawnedEvent = new InstanceSpawnedEvent("mongoshard", "mongoshard123", "network-partition1", "cloud-partition1", "mongoshard123-member-2");
+                InstanceSpawnedEvent instanceSpawnedEvent = new InstanceSpawnedEvent("myTestService", "myTestCluster", "network-partition1", "cloud-partition1", "mongoshard123-member-2");
                 topologyPublisher.publish(instanceSpawnedEvent);
 
-                MemberActivatedEvent memberActivatedEvent = new MemberActivatedEvent("mongoshard", "mongoshard123", "network-partition1", "cloud-partition1", "mongoshard123-member-2");
+                MemberStartedEvent memberStartedEvent = new MemberStartedEvent("myTestService", "myTestCluster", "network-partition1", "cloud-partition1", "mongoshard123-member-2");
+                topologyPublisher.publish(memberStartedEvent);
+
+                MemberActivatedEvent memberActivatedEvent = new MemberActivatedEvent("myTestService", "myTestCluster", "network-partition1", "cloud-partition1", "mongoshard123-member-2");
                 memberActivatedEvent.setMemberIp("127.0.1.1");
                 memberActivatedEvent.addPort(new Port("mongo", 27017, 27017));
 
                 topologyPublisher.publish(memberActivatedEvent);
+
+
             }
             Thread.sleep(TIME_INTERVAL);
         } catch (Exception e) {
