@@ -36,7 +36,9 @@ public class Main {
 
     public static void main(String[] args) {
         URL path = Main.class.getResource("/");
-        System.setProperty("jndi.properties.dir", path.getFile());
+        if (System.getProperty("jndi.properties.dir") == null || System.getProperty("jndi.properties.dir").equals("") ){
+            System.setProperty("jndi.properties.dir", path.getFile());
+        }
         initMessageProcessor();
         initReceivers();
         initGenerators();
@@ -51,7 +53,7 @@ public class Main {
         Thread tenantGeneratorThread = new Thread(tenantEventGenerator);
         tenantGeneratorThread.start();
 
-        HealthStatEventGenerator healthStatEventGenerator = new HealthStatEventGenerator(0);
+        HealthStatEventGenerator healthStatEventGenerator = new HealthStatEventGenerator(1);
         Thread healthStatGeneratorThread = new Thread(healthStatEventGenerator);
         healthStatGeneratorThread.start();
     }

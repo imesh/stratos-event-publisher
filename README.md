@@ -1,5 +1,5 @@
-Apache Stratos (incubating) Samples
+Apache Stratos - Samples
 ======================
 
-This git repo may contain sample applications/components for testing features in Apache Stratos (incubating) PaaS.
+This git repo may contain sample applications/components for testing features in Apache Stratos PaaS.
 

@@ -23,13 +23,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.stratos.messaging.broker.publish.EventPublisher;
 import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
-import org.apache.stratos.messaging.event.health.stat.MemberFaultEvent;
 import org.apache.stratos.messaging.util.Constants;
+import org.samples.apache.stratos.event.event.MemberFaultEventMessage;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Health Statistics Generator
  */
 public class HealthStatEventGenerator implements Runnable {
+
+
     private static final Log log = LogFactory.getLog(HealthStatEventGenerator.class);
     private static long TIME_INTERVAL = 5000;
     private int count;
@@ -52,8 +58,15 @@ public class HealthStatEventGenerator implements Runnable {
                 String memberId = "";
                 float value = (float) 0.0;
 
-                MemberFaultEvent memberFaultEvent = new MemberFaultEvent(clusterId, memberId, partitionId, value);
-                healthStatPublisher.publish(memberFaultEvent);
+                Map<String, Object> MemberFaultEventMap = new HashMap<String, Object>();
+                MemberFaultEventMessage memberFaultEvent = new MemberFaultEventMessage(clusterId, memberId, partitionId, value);
+                MemberFaultEventMap.put("org.apache.stratos.messaging.event.health.stat.MemberFaultEvent", memberFaultEvent);
+
+                Properties headers = new Properties();
+                headers.put(Constants.EVENT_CLASS_NAME, memberFaultEvent.getMemberFaultEvent().getClass().getName());
+
+                healthStatPublisher.publish(MemberFaultEventMap, headers, true);
+
                 Thread.sleep(TIME_INTERVAL);
             } catch (Exception e) {
                 log.error(e);

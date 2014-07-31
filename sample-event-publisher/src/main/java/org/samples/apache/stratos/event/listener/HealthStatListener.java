@@ -56,6 +56,7 @@ public class HealthStatListener implements MessageListener {
             }
             log.info(String.format("Message received [TOPIC]: %s  [MESSAGE] %s", Constants.HEALTH_STAT_TOPIC, ((TextMessage) message).getText()));
 
+
         } catch (JMSException e) {
             log.error(e);
         }
