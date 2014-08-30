@@ -30,7 +30,8 @@ public class SubscriptionDomain {
     private String domainName;
     private String applicationContext;
 
-    public SubscriptionDomain(){}
+    public SubscriptionDomain() {
+    }
 
     public SubscriptionDomain(String domainName, String applicationContext) {
         this.domainName = domainName;
@@ -41,15 +42,15 @@ public class SubscriptionDomain {
         return domainName;
     }
 
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
+    }
+
     public String getApplicationContext() {
         return applicationContext;
     }
 
     public void setApplicationContext(String applicationContext) {
         this.applicationContext = applicationContext;
-    }
-
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
     }
 }

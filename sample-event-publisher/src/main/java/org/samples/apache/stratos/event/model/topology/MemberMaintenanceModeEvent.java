@@ -27,6 +27,7 @@ import java.util.Properties;
 
 @XmlRootElement(name = "MemberMaintenanceModeEvent")
 public class MemberMaintenanceModeEvent extends TopologyEvent {
+    private static final Log log = LogFactory.getLog(MemberMaintenanceModeEvent.class);
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
@@ -34,8 +35,6 @@ public class MemberMaintenanceModeEvent extends TopologyEvent {
     private String memberId;
     private MemberStatus status;
     private Properties properties;
-
-    private static final Log log = LogFactory.getLog(MemberMaintenanceModeEvent.class);
 
     public MemberMaintenanceModeEvent() {
 
@@ -54,12 +53,24 @@ public class MemberMaintenanceModeEvent extends TopologyEvent {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public String getClusterId() {
         return clusterId;
     }
 
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
+    }
+
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public MemberStatus getStatus() {
@@ -82,28 +93,16 @@ public class MemberMaintenanceModeEvent extends TopologyEvent {
         return partitionId;
     }
 
-    public String getNetworkPartitionId() {
-        return networkPartitionId;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
-    }
-
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public String getNetworkPartitionId() {
+        return networkPartitionId;
+    }
+
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
     }
 
     @Override

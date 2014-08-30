@@ -30,12 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "TenantUpdatedEvent")
 public class TenantUpdatedEvent extends TenantEvent {
 
+    private static final Log log = LogFactory.getLog(TenantUpdatedEvent.class);
     private int tenantId;
     private String tenantDomain;
 
-    private static final Log log = LogFactory.getLog(TenantUpdatedEvent.class);
-
-    public TenantUpdatedEvent(){
+    public TenantUpdatedEvent() {
 
     }
 
@@ -48,12 +47,12 @@ public class TenantUpdatedEvent extends TenantEvent {
         return tenantId;
     }
 
-    public String getTenantDomain() {
-        return tenantDomain;
-    }
-
     public void setTenantId(int tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public String getTenantDomain() {
+        return tenantDomain;
     }
 
     public void setTenantDomain(String tenantDomain) {
@@ -67,12 +66,12 @@ public class TenantUpdatedEvent extends TenantEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.TenantUpdatedEvent
                 tenantUpdatedEvent = new org.apache.stratos.messaging.event.tenant.TenantUpdatedEvent(tenantId, tenantDomain);
 
         tenantPublisher.publish(tenantUpdatedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

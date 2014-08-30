@@ -31,14 +31,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "ClusterRemovedEvent")
 public class ClusterRemovedEvent extends TopologyEvent {
 
+    private static final Log log = LogFactory.getLog(ClusterRemovedEvent.class);
     private String serviceName;
     private String clusterId;
     private String deploymentPolicy;
     private boolean isLbCluster;
 
-    private static final Log log = LogFactory.getLog(ClusterRemovedEvent.class);
-
-    public ClusterRemovedEvent(){
+    public ClusterRemovedEvent() {
 
     }
 
@@ -53,32 +52,32 @@ public class ClusterRemovedEvent extends TopologyEvent {
         return serviceName;
     }
 
-    public String getClusterId() {
-        return clusterId;
-    }
-
-    public boolean isLbCluster() {
-        return isLbCluster;
-    }
-
-	public String getDeploymentPolicy() {
-		return deploymentPolicy;
-	}
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    public void setDeploymentPolicy(String deploymentPolicy) {
-        this.deploymentPolicy = deploymentPolicy;
+    public String getClusterId() {
+        return clusterId;
     }
 
     public void setClusterId(String clusterId) {
         this.clusterId = clusterId;
     }
 
+    public boolean isLbCluster() {
+        return isLbCluster;
+    }
+
     public void setLbCluster(boolean isLbCluster) {
         this.isLbCluster = isLbCluster;
+    }
+
+    public String getDeploymentPolicy() {
+        return deploymentPolicy;
+    }
+
+    public void setDeploymentPolicy(String deploymentPolicy) {
+        this.deploymentPolicy = deploymentPolicy;
     }
 
     @Override
@@ -88,14 +87,14 @@ public class ClusterRemovedEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.ClusterRemovedEvent
                 clusterRemovedEvent = new org.apache.stratos.messaging.event.topology.ClusterRemovedEvent(
                 serviceName, clusterId, deploymentPolicy, isLbCluster);
 
         topologyPublisher.publish(clusterRemovedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

@@ -24,19 +24,18 @@ import org.apache.commons.logging.LogFactory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *  Model class for InstanceReadyToShutdownEvent.
+ * Model class for InstanceReadyToShutdownEvent.
  */
 @XmlRootElement(name = "InstanceReadyToShutdownEvent")
 public class InstanceReadyToShutdownEvent extends InstanceStatusEvent {
+    private static final Log log = LogFactory.getLog(InstanceReadyToShutdownEvent.class);
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
     private String partitionId;
     private String memberId;
 
-    private static final Log log = LogFactory.getLog(InstanceReadyToShutdownEvent.class);
-
-    public InstanceReadyToShutdownEvent(){
+    public InstanceReadyToShutdownEvent() {
 
     }
 
@@ -53,56 +52,56 @@ public class InstanceReadyToShutdownEvent extends InstanceStatusEvent {
         return serviceName;
     }
 
-    public String getClusterId() {
-        return clusterId;
-    }
-
-    public String getPartitionId() {
-        return partitionId;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public String getNetworkPartitionId() {
-        return networkPartitionId;
-    }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getClusterId() {
+        return clusterId;
     }
 
     public void setClusterId(String clusterId) {
         this.clusterId = clusterId;
     }
 
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public String getPartitionId() {
+        return partitionId;
     }
 
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }
 
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getNetworkPartitionId() {
+        return networkPartitionId;
+    }
+
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
+    }
+
     @Override
     public String toString() {
-        return String.format("[cluster] %s , [service] %s , [network-partition] %s , [partition] %s , [member] %s" ,
+        return String.format("[cluster] %s , [service] %s , [network-partition] %s , [partition] %s , [member] %s",
                 clusterId, serviceName, networkPartitionId, partitionId, memberId);
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.instance.status.InstanceReadyToShutdownEvent
                 instanceReadyToShutdownEvent = new org.apache.stratos.messaging.event.instance.status.InstanceReadyToShutdownEvent(
-                serviceName, clusterId,networkPartitionId, partitionId, memberId);
+                serviceName, clusterId, networkPartitionId, partitionId, memberId);
 
         instanceStatusPublisher.publish(instanceReadyToShutdownEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

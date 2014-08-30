@@ -25,12 +25,8 @@ import org.apache.stratos.messaging.broker.publish.EventPublisher;
 import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
 import org.apache.stratos.messaging.event.Event;
 import org.apache.stratos.messaging.util.Constants;
-import org.samples.apache.stratos.event.event.MemberFaultEventMessage;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Health Statistics Generator
@@ -56,19 +52,6 @@ public class HealthStatEventGenerator implements Runnable {
         for (int i = 0; i < count; i++) {
             try {
                 log.info("Generating sample HealthStat event...");
-                String clusterId = "appserver.appserver.cloudstagi";
-                String partitionId = "P1";
-                String memberId = "appserver.appserver.cloudstagi2c2bc5f4-aeb7-4551-9852-5a7e55e17ef6";
-                float value = (float) 0.0;
-
-                Map<String, Object> MemberFaultEventMap = new HashMap<String, Object>();
-                MemberFaultEventMessage memberFaultEvent = new MemberFaultEventMessage(clusterId, memberId, partitionId, value);
-                MemberFaultEventMap.put("org.apache.stratos.messaging.event.health.stat.MemberFaultEvent", memberFaultEvent);
-
-                Properties headers = new Properties();
-                headers.put(Constants.EVENT_CLASS_NAME, memberFaultEvent.getMemberFaultEvent().getClass().getName());
-
-                healthStatPublisher.publish(MemberFaultEventMap, headers, true);
 
                 Thread.sleep(TIME_INTERVAL);
             } catch (Exception e) {

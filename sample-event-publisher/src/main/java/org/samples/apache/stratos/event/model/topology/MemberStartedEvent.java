@@ -33,6 +33,7 @@ import java.util.Properties;
 @XmlRootElement(name = "MemberStartedEvent")
 public class MemberStartedEvent extends TopologyEvent {
 
+    private static final Log log = LogFactory.getLog(MemberStartedEvent.class);
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
@@ -41,9 +42,7 @@ public class MemberStartedEvent extends TopologyEvent {
     private MemberStatus status;
     private Properties properties;
 
-    private static final Log log = LogFactory.getLog(MemberStartedEvent.class);
-
-    public MemberStartedEvent(){
+    public MemberStartedEvent() {
 
     }
 
@@ -59,12 +58,24 @@ public class MemberStartedEvent extends TopologyEvent {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public String getClusterId() {
         return clusterId;
     }
 
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
+    }
+
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public MemberStatus getStatus() {
@@ -83,32 +94,20 @@ public class MemberStartedEvent extends TopologyEvent {
         this.properties = properties;
     }
 
-	public String getPartitionId() {
-		return partitionId;
-	}
-
-    public String getNetworkPartitionId() {
-        return networkPartitionId;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
+    public String getPartitionId() {
+        return partitionId;
     }
 
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public String getNetworkPartitionId() {
+        return networkPartitionId;
+    }
+
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
     }
 
     @Override
@@ -118,7 +117,7 @@ public class MemberStartedEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.MemberStartedEvent
                 memberStartedEvent = new org.apache.stratos.messaging.event.topology.MemberStartedEvent(
@@ -131,7 +130,7 @@ public class MemberStartedEvent extends TopologyEvent {
         memberStartedEvent.setProperties(properties);
 
         topologyPublisher.publish(memberStartedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

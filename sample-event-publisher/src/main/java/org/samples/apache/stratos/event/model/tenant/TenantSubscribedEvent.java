@@ -32,13 +32,12 @@ import java.util.Set;
 @XmlRootElement(name = "TenantSubscribedEvent")
 public class TenantSubscribedEvent extends TenantEvent {
 
+    private static final Log log = LogFactory.getLog(TenantSubscribedEvent.class);
     private int tenantId;
     private String serviceName;
     private Set<String> clusterIds;
 
-    private static final Log log = LogFactory.getLog(TenantSubscribedEvent.class);
-
-    public TenantSubscribedEvent(){
+    public TenantSubscribedEvent() {
 
     }
 
@@ -52,20 +51,20 @@ public class TenantSubscribedEvent extends TenantEvent {
         return tenantId;
     }
 
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public Set<String> getClusterIds() {
-        return Collections.unmodifiableSet(clusterIds);
-    }
-
     public void setTenantId(int tenantId) {
         this.tenantId = tenantId;
     }
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public Set<String> getClusterIds() {
+        return Collections.unmodifiableSet(clusterIds);
     }
 
     public void setClusterIds(Set<String> clusterIds) {
@@ -79,12 +78,12 @@ public class TenantSubscribedEvent extends TenantEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.TenantSubscribedEvent
                 tenantSubscribedEvent = new org.apache.stratos.messaging.event.tenant.TenantSubscribedEvent(tenantId, serviceName, clusterIds);
 
         tenantPublisher.publish(tenantSubscribedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

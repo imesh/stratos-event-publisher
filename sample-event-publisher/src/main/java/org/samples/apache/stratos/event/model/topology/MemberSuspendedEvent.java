@@ -31,15 +31,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "MemberSuspendedEvent")
 public class MemberSuspendedEvent extends TopologyEvent {
 
+    private static final Log log = LogFactory.getLog(MemberSuspendedEvent.class);
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
     private String partitionId;
     private String memberId;
 
-    private static final Log log = LogFactory.getLog(MemberSuspendedEvent.class);
-
-    public MemberSuspendedEvent(){
+    public MemberSuspendedEvent() {
 
     }
 
@@ -55,40 +54,40 @@ public class MemberSuspendedEvent extends TopologyEvent {
         return serviceName;
     }
 
-    public String getClusterId() {
-        return clusterId;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public String getNetworkPartitionId() {
-        return networkPartitionId;
-    }
-
-    public String getPartitionId() {
-        return partitionId;
-    }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getClusterId() {
+        return clusterId;
     }
 
     public void setClusterId(String clusterId) {
         this.clusterId = clusterId;
     }
 
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
-    }
-
-    public void setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
+    public String getMemberId() {
+        return memberId;
     }
 
     public void setMemberId(String memberId) {
         this.memberId = memberId;
+    }
+
+    public String getNetworkPartitionId() {
+        return networkPartitionId;
+    }
+
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
+    }
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
     }
 
     @Override
@@ -98,14 +97,14 @@ public class MemberSuspendedEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.MemberSuspendedEvent
                 memberSuspendedEvent = new org.apache.stratos.messaging.event.topology.MemberSuspendedEvent(
                 serviceName, clusterId, networkPartitionId, partitionId, memberId);
 
         topologyPublisher.publish(memberSuspendedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

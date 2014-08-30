@@ -38,7 +38,7 @@ public class Subscription {
     private Set<String> clusterIds;
     private Map<String, org.apache.stratos.messaging.domain.tenant.SubscriptionDomain> subscriptionDomainMap;
 
-    public Subscription(){
+    public Subscription() {
 
     }
 
@@ -52,8 +52,16 @@ public class Subscription {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public Set<String> getClusterIds() {
         return Collections.unmodifiableSet(clusterIds);
+    }
+
+    public void setClusterIds(Set<String> clusterIds) {
+        this.clusterIds = clusterIds;
     }
 
     public void addSubscriptionDomain(org.apache.stratos.messaging.domain.tenant.SubscriptionDomain subscriptionDomain) {
@@ -65,11 +73,10 @@ public class Subscription {
     }
 
     public void removeSubscriptionDomain(String domainName) {
-        if(subscriptionDomainExists(domainName)) {
+        if (subscriptionDomainExists(domainName)) {
             subscriptionDomainMap.remove(domainName);
-        }
-        else {
-            if(log.isWarnEnabled()) {
+        } else {
+            if (log.isWarnEnabled()) {
                 log.warn("Subscription domain does not exist: " + domainName);
             }
         }
@@ -81,14 +88,6 @@ public class Subscription {
 
     public Collection<SubscriptionDomain> getSubscriptionDomains() {
         return Collections.unmodifiableCollection(subscriptionDomainMap.values());
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterIds(Set<String> clusterIds) {
-        this.clusterIds = clusterIds;
     }
 
     public Map<String, SubscriptionDomain> getSubscriptionDomainMap() {

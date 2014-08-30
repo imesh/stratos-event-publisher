@@ -17,8 +17,8 @@
   ~ under the License.
   -->
 
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
     <id>bin</id>
     <formats>
@@ -56,7 +56,7 @@
             <includes>
                 <include>jndi.properties</include>
             </includes>
-        </fileSet>        
+        </fileSet>
         <fileSet>
             <directory>${project.basedir}</directory>
             <outputDirectory>/</outputDirectory>
@@ -72,7 +72,7 @@
             <outputDirectory>/</outputDirectory>
             <fileMode>0600</fileMode>
         </fileSet>
-	<fileSet>
+        <fileSet>
             <directory>${project.basedir}/src/main/notice</directory>
             <outputDirectory>/</outputDirectory>
             <fileMode>0600</fileMode>
@@ -81,13 +81,13 @@
     <dependencySets>
         <dependencySet>
             <excludes>
-		<exclude>*:annotations*</exclude>
-		<exclude>*:icu4j*</exclude>
-		<exclude>*:jaxen*</exclude>
-		<exclude>*:jboss-transaction-api*</exclude>
-		<exclude>*:wrapper*</exclude>
-		<exclude>*:xom*</exclude>
-	    </excludes>
+                <exclude>*:annotations*</exclude>
+                <exclude>*:icu4j*</exclude>
+                <exclude>*:jaxen*</exclude>
+                <exclude>*:jboss-transaction-api*</exclude>
+                <exclude>*:wrapper*</exclude>
+                <exclude>*:xom*</exclude>
+            </excludes>
             <outputDirectory>/lib</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <scope>runtime</scope>

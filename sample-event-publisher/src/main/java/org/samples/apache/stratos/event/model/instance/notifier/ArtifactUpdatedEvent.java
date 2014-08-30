@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ArtifactUpdatedEvent")
 public class ArtifactUpdatedEvent extends InstanceNotifierEvent {
+    private static final Log log = LogFactory.getLog(ArtifactUpdatedEvent.class);
     private String clusterId;
     private String status;
     private String repoUserName;
@@ -37,8 +38,6 @@ public class ArtifactUpdatedEvent extends InstanceNotifierEvent {
     private String repoURL;
     private String tenantId;
     private boolean commitEnabled;
-
-    private static final Log log = LogFactory.getLog(ArtifactUpdatedEvent.class);
 
     public String getClusterId() {
         return clusterId;
@@ -56,37 +55,37 @@ public class ArtifactUpdatedEvent extends InstanceNotifierEvent {
         this.status = status;
     }
 
-	public String getRepoUserName() {
-		return repoUserName;
-	}
+    public String getRepoUserName() {
+        return repoUserName;
+    }
 
-	public void setRepoUserName(String repoUserName) {
-		this.repoUserName = repoUserName;
-	}
+    public void setRepoUserName(String repoUserName) {
+        this.repoUserName = repoUserName;
+    }
 
-	public String getRepoPassword() {
-		return repoPassword;
-	}
+    public String getRepoPassword() {
+        return repoPassword;
+    }
 
-	public void setRepoPassword(String repoPassword) {
-		this.repoPassword = repoPassword;
-	}
+    public void setRepoPassword(String repoPassword) {
+        this.repoPassword = repoPassword;
+    }
 
-	public String getRepoURL() {
-		return repoURL;
-	}
+    public String getRepoURL() {
+        return repoURL;
+    }
 
-	public void setRepoURL(String repoURL) {
-		this.repoURL = repoURL;
-	}
+    public void setRepoURL(String repoURL) {
+        this.repoURL = repoURL;
+    }
 
-	public String getTenantId() {
-		return tenantId;
-	}
+    public String getTenantId() {
+        return tenantId;
+    }
 
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 
     @Override
     public String toString() {
@@ -103,7 +102,7 @@ public class ArtifactUpdatedEvent extends InstanceNotifierEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.instance.notifier.ArtifactUpdatedEvent
                 artifactUpdatedEvent = new org.apache.stratos.messaging.event.instance.notifier.ArtifactUpdatedEvent();
         artifactUpdatedEvent.setClusterId(clusterId);
@@ -115,7 +114,7 @@ public class ArtifactUpdatedEvent extends InstanceNotifierEvent {
         artifactUpdatedEvent.setTenantId(tenantId);
 
         instanceNotifierPublisher.publish(artifactUpdatedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

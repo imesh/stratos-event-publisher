@@ -33,12 +33,11 @@ import java.util.Set;
 @XmlRootElement(name = "SubscriptionDomainsRemovedEvent")
 public class SubscriptionDomainsRemovedEvent extends TenantEvent {
 
+    private static final Log log = LogFactory.getLog(SubscriptionDomainsRemovedEvent.class);
     private int tenantId;
     private String serviceName;
     private Set<String> clusterIds;
     private Set<String> domains;
-
-    private static final Log log = LogFactory.getLog(SubscriptionDomainsRemovedEvent.class);
 
     public SubscriptionDomainsRemovedEvent() {
 
@@ -55,12 +54,24 @@ public class SubscriptionDomainsRemovedEvent extends TenantEvent {
         return tenantId;
     }
 
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public String getServiceName() {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public Set<String> getClusterIds() {
         return Collections.unmodifiableSet(clusterIds);
+    }
+
+    public void setClusterIds(Set<String> clusterIds) {
+        this.clusterIds = clusterIds;
     }
 
     public Set<String> getDomains() {
@@ -71,18 +82,6 @@ public class SubscriptionDomainsRemovedEvent extends TenantEvent {
         this.domains = domains;
     }
 
-    public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterIds(Set<String> clusterIds) {
-        this.clusterIds = clusterIds;
-    }
-
     @Override
     public String toString() {
         return String.format("[tenant] %d , [service] %s , [cluster-set] %s , [domains] %s",
@@ -90,13 +89,13 @@ public class SubscriptionDomainsRemovedEvent extends TenantEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.SubscriptionDomainsRemovedEvent
                 subscriptionDomainsRemovedEvent = new org.apache.stratos.messaging.event.tenant.SubscriptionDomainsRemovedEvent(
                 tenantId, serviceName, clusterIds, domains);
 
         tenantPublisher.publish(subscriptionDomainsRemovedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

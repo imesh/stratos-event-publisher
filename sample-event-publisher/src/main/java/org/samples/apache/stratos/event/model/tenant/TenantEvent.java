@@ -37,7 +37,7 @@ public class TenantEvent extends Event implements SampleEventInterface {
     @Override
     public void process() {
         tenantPublisher.publish(this);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().getSimpleName() + " Event published: " + this);
         }
     }

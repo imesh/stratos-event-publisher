@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.samples.apache.stratos.event.model.tenant;
+package org.samples.apache.stratos.event.model.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,43 +25,33 @@ import org.apache.commons.logging.LogFactory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Model class for TenantRemovedEvent
+ * Model class for SleepEvent.
  */
-@XmlRootElement(name = "TenantRemovedEvent")
-public class TenantRemovedEvent extends TenantEvent {
 
-    private static final Log log = LogFactory.getLog(TenantRemovedEvent.class);
-    private int tenantId;
+@XmlRootElement(name = "SleepEvent")
+public class SleepEvent extends ActionEvent {
 
-    public TenantRemovedEvent() {
+    private static final Log log = LogFactory.getLog(SleepEvent.class);
+    private long duration;
+
+    public SleepEvent() {
 
     }
 
-    public TenantRemovedEvent(int tenantId) {
-        this.tenantId = tenantId;
+    public long getDuration() {
+        return duration;
     }
 
-    public int getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("[tenant-id] %s", tenantId);
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     @Override
     public void process() {
-        org.apache.stratos.messaging.event.tenant.TenantRemovedEvent
-                tenantRemovedEvent = new org.apache.stratos.messaging.event.tenant.TenantRemovedEvent(tenantId);
-
-        tenantPublisher.publish(tenantRemovedEvent);
-        if (log.isInfoEnabled()) {
-            log.info(this.getClass().toString() + " Event published: " + this);
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

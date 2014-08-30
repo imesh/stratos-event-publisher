@@ -35,6 +35,7 @@ import java.util.Map;
 
 @XmlRootElement(name = "MemberActivatedEvent")
 public class MemberActivatedEvent extends TopologyEvent {
+    private static final Log log = LogFactory.getLog(MemberActivatedEvent.class);
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
@@ -42,8 +43,6 @@ public class MemberActivatedEvent extends TopologyEvent {
     private String memberId;
     private Map<Integer, Port> portMap;
     private String memberIp;
-
-    private static final Log log = LogFactory.getLog(MemberActivatedEvent.class);
 
     public MemberActivatedEvent() {
 
@@ -62,20 +61,40 @@ public class MemberActivatedEvent extends TopologyEvent {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public String getClusterId() {
         return clusterId;
+    }
+
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
     }
 
     public String getNetworkPartitionId() {
         return networkPartitionId;
     }
 
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
+    }
+
     public String getPartitionId() {
         return this.partitionId;
     }
 
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+    }
+
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public Collection<Port> getPorts() {
@@ -121,26 +140,6 @@ public class MemberActivatedEvent extends TopologyEvent {
 
     public void setPortMap(Map<Integer, Port> portMap) {
         this.portMap = portMap;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
-    }
-
-    public void setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
     }
 
     @Override

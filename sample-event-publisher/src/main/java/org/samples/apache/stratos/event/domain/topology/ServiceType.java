@@ -30,6 +30,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlEnum
 public enum ServiceType {
-    @XmlEnumValue("SingleTenant") SingleTenant,
-    @XmlEnumValue("MultiTenant") MultiTenant;
+    @XmlEnumValue("SingleTenant")SingleTenant,
+    @XmlEnumValue("MultiTenant")MultiTenant;
 }

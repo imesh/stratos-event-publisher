@@ -67,12 +67,24 @@ public class Member {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public String getClusterId() {
         return clusterId;
     }
 
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
+    }
+
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public MemberStatus getStatus() {
@@ -136,6 +148,10 @@ public class Member {
         return partitionId;
     }
 
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+    }
+
     public String getLbClusterId() {
         return lbClusterId;
     }
@@ -148,32 +164,16 @@ public class Member {
         return networkPartitionId;
     }
 
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
+    }
+
     public String getMemberPublicIp() {
         return memberPublicIp;
     }
 
     public void setMemberPublicIp(String memberPublicIp) {
         this.memberPublicIp = memberPublicIp;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
-    }
-
-    public void setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
     }
 
     public Map<Integer, Port> getPortMap() {

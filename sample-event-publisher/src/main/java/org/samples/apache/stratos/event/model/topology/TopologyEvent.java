@@ -30,14 +30,14 @@ import org.samples.apache.stratos.event.model.SampleEventInterface;
 /**
  * Model class for Topology Events
  */
-public class TopologyEvent extends Event implements SampleEventInterface{
+public class TopologyEvent extends Event implements SampleEventInterface {
     protected static final EventPublisher topologyPublisher = EventPublisherPool.getPublisher(Constants.TOPOLOGY_TOPIC);
     private static final Log log = LogFactory.getLog(TopologyEvent.class);
 
     @Override
     public void process() {
         topologyPublisher.publish(this);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().getSimpleName() + " Event published: " + this);
         }
     }

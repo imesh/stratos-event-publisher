@@ -26,15 +26,14 @@ import org.samples.apache.stratos.event.domain.topology.ClusterStatus;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ClusterMaintenanceModeEvent")
-public class ClusterMaintenanceModeEvent extends TopologyEvent  {
-
-	private String serviceName;
-	private String clusterId;
-    private ClusterStatus status;
+public class ClusterMaintenanceModeEvent extends TopologyEvent {
 
     private static final Log log = LogFactory.getLog(ClusterMaintenanceModeEvent.class);
+    private String serviceName;
+    private String clusterId;
+    private ClusterStatus status;
 
-    public ClusterMaintenanceModeEvent(){
+    public ClusterMaintenanceModeEvent() {
 
     }
 
@@ -47,8 +46,16 @@ public class ClusterMaintenanceModeEvent extends TopologyEvent  {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public String getClusterId() {
         return clusterId;
+    }
+
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
     }
 
     public ClusterStatus getStatus() {
@@ -59,14 +66,6 @@ public class ClusterMaintenanceModeEvent extends TopologyEvent  {
         this.status = status;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
     @Override
     public String toString() {
         return String.format("[service] %s , [cluster-id] %s , [cluster-status] %s",
@@ -74,7 +73,7 @@ public class ClusterMaintenanceModeEvent extends TopologyEvent  {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.ClusterMaintenanceModeEvent
                 clusterMaintenanceModeEvent = new org.apache.stratos.messaging.event.topology.ClusterMaintenanceModeEvent(serviceName, clusterId);
@@ -84,7 +83,7 @@ public class ClusterMaintenanceModeEvent extends TopologyEvent  {
         clusterMaintenanceModeEvent.setStatus(clusterStatus);
 
         topologyPublisher.publish(clusterMaintenanceModeEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

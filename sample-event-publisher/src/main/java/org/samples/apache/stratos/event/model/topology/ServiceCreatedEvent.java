@@ -25,8 +25,6 @@ import org.samples.apache.stratos.event.domain.topology.Port;
 import org.samples.apache.stratos.event.domain.topology.ServiceType;
 import org.samples.apache.stratos.event.util.PropertiesAdaptor;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -39,15 +37,12 @@ import java.util.*;
 @XmlRootElement(name = "ServiceCreatedEvent")
 public class ServiceCreatedEvent extends TopologyEvent {
 
+    private static final Log log = LogFactory.getLog(ServiceCreatedEvent.class);
     private String serviceName;
     private ServiceType serviceType;
     // Key: Port.proxy
     private Map<Integer, Port> portMap;
-
-
     private Properties properties;
-
-    private static final Log log = LogFactory.getLog(ServiceCreatedEvent.class);
 
     public ServiceCreatedEvent() {
 
@@ -63,8 +58,16 @@ public class ServiceCreatedEvent extends TopologyEvent {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public ServiceType getServiceType() {
         return serviceType;
+    }
+
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public Collection<Port> getPorts() {
@@ -106,20 +109,12 @@ public class ServiceCreatedEvent extends TopologyEvent {
         this.properties = properties;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
     public Map<Integer, Port> getPortMap() {
         return portMap;
     }
 
     public void setPortMap(Map<Integer, Port> portMap) {
         this.portMap = portMap;
-    }
-
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
     }
 
     @Override

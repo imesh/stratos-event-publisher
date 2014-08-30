@@ -31,7 +31,8 @@ import java.util.Properties;
 
 @XmlRootElement(name = "MemberReadyToShutdownEvent")
 public class MemberReadyToShutdownEvent extends TopologyEvent {
-    private  String serviceName;
+    private static final Log log = LogFactory.getLog(MemberReadyToShutdownEvent.class);
+    private String serviceName;
     private String clusterId;
     private String networkPartitionId;
     private String partitionId;
@@ -39,9 +40,7 @@ public class MemberReadyToShutdownEvent extends TopologyEvent {
     private MemberStatus status;
     private Properties properties;
 
-    private static final Log log = LogFactory.getLog(MemberReadyToShutdownEvent.class);
-
-    public MemberReadyToShutdownEvent(){
+    public MemberReadyToShutdownEvent() {
 
     }
 
@@ -54,16 +53,28 @@ public class MemberReadyToShutdownEvent extends TopologyEvent {
         this.memberId = memberId;
     }
 
-     public String getServiceName() {
+    public String getServiceName() {
         return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getClusterId() {
         return clusterId;
     }
 
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
+    }
+
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public MemberStatus getStatus() {
@@ -82,32 +93,20 @@ public class MemberReadyToShutdownEvent extends TopologyEvent {
         this.properties = properties;
     }
 
-	public String getPartitionId() {
-		return partitionId;
-	}
-
-    public String getNetworkPartitionId() {
-        return networkPartitionId;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
-    }
-
-    public void setNetworkPartitionId(String networkPartitionId) {
-        this.networkPartitionId = networkPartitionId;
+    public String getPartitionId() {
+        return partitionId;
     }
 
     public void setPartitionId(String partitionId) {
         this.partitionId = partitionId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public String getNetworkPartitionId() {
+        return networkPartitionId;
+    }
+
+    public void setNetworkPartitionId(String networkPartitionId) {
+        this.networkPartitionId = networkPartitionId;
     }
 
     @Override
@@ -117,7 +116,7 @@ public class MemberReadyToShutdownEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.MemberReadyToShutdownEvent
                 memberReadyToShutdownEvent = new org.apache.stratos.messaging.event.topology.MemberReadyToShutdownEvent(
@@ -130,7 +129,7 @@ public class MemberReadyToShutdownEvent extends TopologyEvent {
         memberReadyToShutdownEvent.setProperties(properties);
 
         topologyPublisher.publish(memberReadyToShutdownEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

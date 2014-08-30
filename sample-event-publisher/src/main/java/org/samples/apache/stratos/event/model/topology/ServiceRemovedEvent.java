@@ -21,6 +21,7 @@ package org.samples.apache.stratos.event.model.topology;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,11 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "ServiceRemovedEvent")
 public class ServiceRemovedEvent extends TopologyEvent {
 
+    private static final Log log = LogFactory.getLog(ServiceCreatedEvent.class);
     private String serviceName;
 
-    private static final Log log = LogFactory.getLog(ServiceCreatedEvent.class);
-
-    public ServiceRemovedEvent(){
+    public ServiceRemovedEvent() {
 
     }
 
@@ -56,13 +56,13 @@ public class ServiceRemovedEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.event.topology.ServiceRemovedEvent
                 serviceRemovedEvent = new org.apache.stratos.messaging.event.topology.ServiceRemovedEvent(serviceName);
 
         topologyPublisher.publish(serviceRemovedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

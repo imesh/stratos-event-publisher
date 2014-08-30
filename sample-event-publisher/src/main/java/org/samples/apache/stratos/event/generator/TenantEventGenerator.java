@@ -25,7 +25,10 @@ import org.apache.stratos.messaging.broker.publish.EventPublisher;
 import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
 import org.apache.stratos.messaging.domain.tenant.Subscription;
 import org.apache.stratos.messaging.domain.tenant.Tenant;
-import org.apache.stratos.messaging.domain.topology.*;
+import org.apache.stratos.messaging.domain.topology.Port;
+import org.apache.stratos.messaging.domain.topology.Service;
+import org.apache.stratos.messaging.domain.topology.ServiceType;
+import org.apache.stratos.messaging.domain.topology.Topology;
 import org.apache.stratos.messaging.event.tenant.CompleteTenantEvent;
 import org.apache.stratos.messaging.event.tenant.SubscriptionDomainAddedEvent;
 import org.apache.stratos.messaging.event.tenant.SubscriptionDomainRemovedEvent;
@@ -33,7 +36,9 @@ import org.apache.stratos.messaging.event.tenant.TenantCreatedEvent;
 import org.apache.stratos.messaging.message.receiver.tenant.TenantManager;
 import org.apache.stratos.messaging.util.Constants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Tenant Event generator.
@@ -60,7 +65,6 @@ public class TenantEventGenerator implements Runnable {
         t.addSubscription(subscription);
         TenantManager.getInstance().addTenant(t);
         tenantPublisher.publish(new TenantCreatedEvent(t));
-
 
 
         for (int i = 0; i < count; i++) {

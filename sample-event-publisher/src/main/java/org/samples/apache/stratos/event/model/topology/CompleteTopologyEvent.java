@@ -28,16 +28,16 @@ import org.samples.apache.stratos.event.domain.topology.Topology;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *  Model class for CompleteTopologyEvent.
+ * Model class for CompleteTopologyEvent.
  */
 
 @XmlRootElement(name = "CompleteTopologyEvent")
 public class CompleteTopologyEvent extends TopologyEvent {
 
-    private Topology topology;
     private static final Log log = LogFactory.getLog(CompleteTopologyEvent.class);
+    private Topology topology;
 
-    public CompleteTopologyEvent(){
+    public CompleteTopologyEvent() {
 
     }
 
@@ -59,11 +59,11 @@ public class CompleteTopologyEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.domain.topology.Topology topology1 = new org.apache.stratos.messaging.domain.topology.Topology();
 
-        for (Service service : topology.getServices()){
+        for (Service service : topology.getServices()) {
             ServiceType serviceType = ServiceType.valueOf(service.getServiceType().name());
             org.apache.stratos.messaging.domain.topology.Service
                     service1 = new org.apache.stratos.messaging.domain.topology.Service(service.getServiceName(), serviceType);
@@ -75,7 +75,7 @@ public class CompleteTopologyEvent extends TopologyEvent {
                 completeTopologyEvent = new org.apache.stratos.messaging.event.topology.CompleteTopologyEvent(topology1);
 
         topologyPublisher.publish(completeTopologyEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

@@ -34,12 +34,11 @@ import java.util.Properties;
 
 @XmlRootElement(name = "MemberFaultEvent")
 public class MemberFaultEvent extends HealthStatEvent {
+    private static final Log log = LogFactory.getLog(MemberFaultEvent.class);
     private java.lang.String clusterId;
     private java.lang.String memberId;
     private java.lang.String partitionId;
     private float value;
-
-    private static final Log log = LogFactory.getLog(MemberFaultEvent.class);
 
     public String getClusterId() {
         return clusterId;

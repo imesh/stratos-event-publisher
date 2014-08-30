@@ -16,52 +16,56 @@
         </portMap>
 
         <properties>
-           <entry key="key2">val2</entry>
-           <entry key="key1">val1</entry>
-        </properties>        
+            <entry key="key2">val2</entry>
+            <entry key="key1">val1</entry>
+        </properties>
 
     </ServiceCreatedEvent>
 
     <ClusterCreatedEvent>
-       <serviceName>service-2</serviceName>
-       <clusterId>cluster-2</clusterId>
-       <cluster>
-          <serviceName>service-2</serviceName>
-          <clusterId>cluster-2</clusterId>
-          <autoscalePolicyName>economy auto-scale policy</autoscalePolicyName>
-          <deploymentPolicyName>flat deployment policy</deploymentPolicyName>
-          <tenantRange>*</tenantRange>
-          <isLbCluster>false</isLbCluster>
-       </cluster>
+        <serviceName>service-2</serviceName>
+        <clusterId>cluster-2</clusterId>
+        <cluster>
+            <serviceName>service-2</serviceName>
+            <clusterId>cluster-2</clusterId>
+            <autoscalePolicyName>economy auto-scale policy</autoscalePolicyName>
+            <deploymentPolicyName>flat deployment policy</deploymentPolicyName>
+            <tenantRange>*</tenantRange>
+            <isLbCluster>false</isLbCluster>
+        </cluster>
     </ClusterCreatedEvent>
 
     <InstanceSpawnedEvent>
-       <serviceName>service-2</serviceName>
-       <clusterId>cluster-2</clusterId>
+        <serviceName>service-2</serviceName>
+        <clusterId>cluster-2</clusterId>
         <memberId>member-1</memberId>
         <partitionId>partitionId-1</partitionId>
         <networkPartitionId>np-1</networkPartitionId>
     </InstanceSpawnedEvent>
 
     <InstanceStartedEvent>
-       <serviceName>service-2</serviceName>
-       <clusterId>cluster-2</clusterId>
+        <serviceName>service-2</serviceName>
+        <clusterId>cluster-2</clusterId>
         <memberId>member-1</memberId>
         <partitionId>partitionId-1</partitionId>
         <networkPartitionId>np-1</networkPartitionId>
     </InstanceStartedEvent>
 
+    <SleepEvent>
+        <duration>5000</duration>
+    </SleepEvent>
+
     <InstanceActivatedEvent>
-       <serviceName>service-2</serviceName>
-       <clusterId>cluster-2</clusterId>
+        <serviceName>service-2</serviceName>
+        <clusterId>cluster-2</clusterId>
         <memberId>member-1</memberId>
         <partitionId>partitionId-1</partitionId>
         <networkPartitionId>np-1</networkPartitionId>
     </InstanceActivatedEvent>
 
     <MemberActivatedEvent>
-       <serviceName>service-2</serviceName>
-       <clusterId>cluster-2</clusterId>
+        <serviceName>service-2</serviceName>
+        <clusterId>cluster-2</clusterId>
         <memberId>member-1</memberId>
         <partitionId>partitionId-1</partitionId>
         <networkPartitionId>np-1</networkPartitionId>
@@ -80,9 +84,6 @@
         <partitionId>partitionId-2</partitionId>
         <value>value-2</value>
     </MemberFaultEvent>
-
-
-
 
 
 </SampleEvents>

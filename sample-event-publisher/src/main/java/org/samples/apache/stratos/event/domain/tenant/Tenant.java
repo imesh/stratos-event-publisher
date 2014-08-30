@@ -38,7 +38,8 @@ public class Tenant {
     // Map<ServiceName, Subscription>
     private Map<String, Subscription> serviceNameSubscriptionMap;
 
-    public Tenant(){}
+    public Tenant() {
+    }
 
     public Tenant(int tenantId, String tenantDomain) {
         this.tenantId = tenantId;
@@ -50,6 +51,10 @@ public class Tenant {
         return tenantId;
     }
 
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public String getTenantDomain() {
         return tenantDomain;
     }
@@ -59,7 +64,7 @@ public class Tenant {
     }
 
     public Subscription getSubscription(String serviceName) {
-        if(serviceNameSubscriptionMap.containsKey(serviceName)) {
+        if (serviceNameSubscriptionMap.containsKey(serviceName)) {
             return serviceNameSubscriptionMap.get(serviceName);
         }
         return null;
@@ -79,10 +84,6 @@ public class Tenant {
 
     public void removeSubscription(String serviceName) {
         serviceNameSubscriptionMap.remove(serviceName);
-    }
-
-    public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
     }
 
     public Map<String, Subscription> getServiceNameSubscriptionMap() {

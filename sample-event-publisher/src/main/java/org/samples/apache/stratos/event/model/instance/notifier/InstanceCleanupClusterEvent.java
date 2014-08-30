@@ -29,11 +29,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "InstanceCleanupClusterEvent")
 public class InstanceCleanupClusterEvent extends InstanceNotifierEvent {
+    private static final Log log = LogFactory.getLog(InstanceCleanupClusterEvent.class);
     private String clusterId;
 
-    private static final Log log = LogFactory.getLog(InstanceCleanupClusterEvent.class);
-
-    public InstanceCleanupClusterEvent(){
+    public InstanceCleanupClusterEvent() {
 
     }
 
@@ -51,17 +50,16 @@ public class InstanceCleanupClusterEvent extends InstanceNotifierEvent {
 
     @Override
     public String toString() {
-        return String.format("[cluster] %s" , clusterId);
+        return String.format("[cluster] %s", clusterId);
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.instance.notifier.InstanceCleanupClusterEvent
                 instanceCleanupClusterEvent = new org.apache.stratos.messaging.event.instance.notifier.InstanceCleanupClusterEvent(clusterId);
 
-
         instanceNotifierPublisher.publish(instanceCleanupClusterEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

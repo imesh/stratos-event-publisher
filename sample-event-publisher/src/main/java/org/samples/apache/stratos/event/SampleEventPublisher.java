@@ -58,14 +58,14 @@ import java.util.List;
 public class SampleEventPublisher implements Runnable {
 
     private static final Log log = LogFactory.getLog(SampleEventPublisher.class);
-    private static Gson gson = new Gson();
-    private boolean terminated;
     private static final Type memberType = new TypeToken<Collection<Member>>() {
     }.getType();
     private static final Type tenantType = new TypeToken<Collection<Tenant>>() {
     }.getType();
     private static final Type serviceType = new TypeToken<Collection<Service>>() {
     }.getType();
+    private static Gson gson = new Gson();
+    private boolean terminated;
 
     public SampleEventPublisher() {
 
@@ -102,6 +102,7 @@ public class SampleEventPublisher implements Runnable {
                 for (SampleEventInterface sampleEvent : sampleEventInterfaceList) {
                     try {
                         sampleEvent.process();
+                        Thread.sleep(1000);
                     } catch (Exception ex) {
                         log.error("Error processing Sample Event: " + ex.toString());
                         ex.printStackTrace();

@@ -38,7 +38,7 @@ public class Service {
     private Map<Integer, Port> portMap;
     private Properties properties;
 
-    public Service(){
+    public Service() {
 
     }
 
@@ -53,8 +53,16 @@ public class Service {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     public ServiceType getServiceType() {
         return serviceType;
+    }
+
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public Collection<Cluster> getClusters() {
@@ -86,7 +94,7 @@ public class Service {
     }
 
     public Port getPort(int proxy) {
-        if(portMap.containsKey(proxy)) {
+        if (portMap.containsKey(proxy)) {
             return portMap.get(proxy);
         }
         return null;
@@ -97,7 +105,7 @@ public class Service {
     }
 
     public void addPorts(Collection<Port> ports) {
-        for(Port port : ports) {
+        for (Port port : ports) {
             addPort(port);
         }
     }
@@ -121,16 +129,8 @@ public class Service {
     @Override
     public String toString() {
         return "Service [serviceName=" + serviceName + ", serviceType=" + serviceType +
-               ", clusterIdClusterMap=" + clusterIdClusterMap + ", portMap=" + portMap +
-               ", properties=" + properties + "]";
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
+                ", clusterIdClusterMap=" + clusterIdClusterMap + ", portMap=" + portMap +
+                ", properties=" + properties + "]";
     }
 
     public Map<String, Cluster> getClusterIdClusterMap() {

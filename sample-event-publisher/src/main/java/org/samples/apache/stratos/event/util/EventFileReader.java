@@ -19,7 +19,6 @@
 
 package org.samples.apache.stratos.event.util;
 
-import org.apache.stratos.messaging.event.Event;
 import org.samples.apache.stratos.event.model.Wrapper;
 
 import javax.xml.bind.*;
@@ -36,7 +35,6 @@ public class EventFileReader {
     private static JAXBContext jc = null;
 
 
-
     private EventFileReader() {
     }
 
@@ -48,12 +46,6 @@ public class EventFileReader {
             jc = JAXBContext.newInstance(SampleConstants.eventClassArray);
         }
         return eventFileReader;
-    }
-
-
-    public List<Object> readSampleEvents() throws JAXBException {
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        return unmarshal(unmarshaller, Object.class, System.getProperty(SampleConstants.EVENT_USER_DATA_PATH));
     }
 
     /**
@@ -75,5 +67,10 @@ public class EventFileReader {
         Wrapper wrapper = new Wrapper(list);
         JAXBElement<Wrapper> jaxbElement = new JAXBElement<Wrapper>(qName, Wrapper.class, wrapper);
         marshaller.marshal(jaxbElement, System.out);
+    }
+
+    public List<Object> readSampleEvents() throws JAXBException {
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+        return unmarshal(unmarshaller, Object.class, System.getProperty(SampleConstants.EVENT_USER_DATA_PATH));
     }
 }

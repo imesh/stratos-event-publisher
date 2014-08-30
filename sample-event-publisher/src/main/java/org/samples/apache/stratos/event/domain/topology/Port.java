@@ -13,7 +13,7 @@ public class Port {
     private int value;
     private int proxy;
 
-    public Port(){
+    public Port() {
 
     }
 

@@ -22,6 +22,7 @@ package org.samples.apache.stratos.event.model.tenant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.stratos.messaging.domain.tenant.Tenant;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,11 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "TenantCreatedEvent")
 public class TenantCreatedEvent extends TenantEvent {
 
-    private Tenant tenant;
     private static final Log log = LogFactory.getLog(TenantCreatedEvent.class);
+    private Tenant tenant;
 
 
-    public TenantCreatedEvent(){
+    public TenantCreatedEvent() {
 
     }
 
@@ -52,17 +53,17 @@ public class TenantCreatedEvent extends TenantEvent {
 
     @Override
     public String toString() {
-        return String.format("[tenant] %s",  tenant);
+        return String.format("[tenant] %s", tenant);
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.TenantCreatedEvent
                 tenantCreatedEvent = new org.apache.stratos.messaging.event.tenant.TenantCreatedEvent(tenant);
 
 
         tenantPublisher.publish(tenantCreatedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

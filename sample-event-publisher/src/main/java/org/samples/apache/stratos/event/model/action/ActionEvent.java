@@ -17,11 +17,17 @@
  * under the License.
  */
 
-package org.samples.apache.stratos.event.model;
+package org.samples.apache.stratos.event.model.action;
+
+import org.apache.stratos.messaging.event.Event;
+import org.samples.apache.stratos.event.model.SampleEventInterface;
 
 /**
- * Interface for sample event
+ * Model class to represent all ActionEvents
  */
-public interface SampleEventInterface {
-    public void process();
+public class ActionEvent extends Event implements SampleEventInterface {
+    @Override
+    public void process() {
+
+    }
 }

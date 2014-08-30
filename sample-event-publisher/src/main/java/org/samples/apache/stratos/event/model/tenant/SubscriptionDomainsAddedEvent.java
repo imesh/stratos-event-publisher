@@ -33,14 +33,13 @@ import java.util.Set;
 @XmlRootElement(name = "SubscriptionDomainsAddedEvent")
 public class SubscriptionDomainsAddedEvent extends TenantEvent {
 
+    private static final Log log = LogFactory.getLog(SubscriptionDomainsAddedEvent.class);
     private int tenantId;
     private String serviceName;
     private Set<String> clusterIds;
     private Set<String> domains;
 
-    private static final Log log = LogFactory.getLog(SubscriptionDomainsAddedEvent.class);
-
-    public SubscriptionDomainsAddedEvent(){
+    public SubscriptionDomainsAddedEvent() {
 
     }
 
@@ -55,28 +54,28 @@ public class SubscriptionDomainsAddedEvent extends TenantEvent {
         return tenantId;
     }
 
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public String getServiceName() {
         return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Set<String> getClusterIds() {
         return Collections.unmodifiableSet(clusterIds);
     }
 
-    public Set<String> getDomains() {
-        return Collections.unmodifiableSet(domains);
-    }
-
-    public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
-    }
-
     public void setClusterIds(Set<String> clusterIds) {
         this.clusterIds = clusterIds;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public Set<String> getDomains() {
+        return Collections.unmodifiableSet(domains);
     }
 
     public void setDomains(Set<String> domains) {
@@ -90,13 +89,13 @@ public class SubscriptionDomainsAddedEvent extends TenantEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.SubscriptionDomainsAddedEvent
                 subscriptionDomainsAddedEvent = new org.apache.stratos.messaging.event.tenant.SubscriptionDomainsAddedEvent(
                 tenantId, serviceName, clusterIds, domains);
 
         tenantPublisher.publish(subscriptionDomainsAddedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

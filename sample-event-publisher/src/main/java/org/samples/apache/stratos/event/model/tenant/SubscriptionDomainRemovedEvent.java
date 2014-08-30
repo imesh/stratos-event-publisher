@@ -32,14 +32,13 @@ import java.util.Set;
 @XmlRootElement(name = "SubscriptionDomainRemovedEvent")
 public class SubscriptionDomainRemovedEvent extends TenantEvent {
 
+    private static final Log log = LogFactory.getLog(SubscriptionDomainRemovedEvent.class);
     private int tenantId;
     private String serviceName;
     private Set<String> clusterIds;
     private String domainName;
 
-    private static final Log log = LogFactory.getLog(SubscriptionDomainRemovedEvent.class);
-
-    public SubscriptionDomainRemovedEvent(){
+    public SubscriptionDomainRemovedEvent() {
 
     }
 
@@ -54,28 +53,28 @@ public class SubscriptionDomainRemovedEvent extends TenantEvent {
         return tenantId;
     }
 
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public Set<String> getClusterIds() {
-        return Collections.unmodifiableSet(clusterIds);
-    }
-
-    public String getDomainName() {
-        return domainName;
-    }
-
     public void setTenantId(int tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public String getServiceName() {
+        return serviceName;
     }
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
+    public Set<String> getClusterIds() {
+        return Collections.unmodifiableSet(clusterIds);
+    }
+
     public void setClusterIds(Set<String> clusterIds) {
         this.clusterIds = clusterIds;
+    }
+
+    public String getDomainName() {
+        return domainName;
     }
 
     public void setDomainName(String domainName) {
@@ -89,13 +88,13 @@ public class SubscriptionDomainRemovedEvent extends TenantEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
         org.apache.stratos.messaging.event.tenant.SubscriptionDomainRemovedEvent
                 subscriptionDomainRemovedEvent = new org.apache.stratos.messaging.event.tenant.SubscriptionDomainRemovedEvent(
                 tenantId, serviceName, clusterIds, domainName);
 
         tenantPublisher.publish(subscriptionDomainRemovedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

@@ -33,13 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "ClusterCreatedEvent")
 public class ClusterCreatedEvent extends TopologyEvent {
 
-	private String serviceName;
-	private String clusterId;
+    private static final Log log = LogFactory.getLog(ClusterCreatedEvent.class);
+    private String serviceName;
+    private String clusterId;
     private Cluster cluster;
 
-    private static final Log log = LogFactory.getLog(ClusterCreatedEvent.class);
-
-    public ClusterCreatedEvent(){
+    public ClusterCreatedEvent() {
 
     }
 
@@ -52,21 +51,21 @@ public class ClusterCreatedEvent extends TopologyEvent {
     public Cluster getCluster() {
         return cluster;
     }
-    
+
     public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }
-    
+
     public String getServiceName() {
         return serviceName;
-    }
-    
-    public String getClusterId() {
-        return clusterId;
     }
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getClusterId() {
+        return clusterId;
     }
 
     public void setClusterId(String clusterId) {
@@ -80,7 +79,7 @@ public class ClusterCreatedEvent extends TopologyEvent {
     }
 
     @Override
-    public void process(){
+    public void process() {
 
         org.apache.stratos.messaging.domain.topology.Cluster
                 cluster1 = new org.apache.stratos.messaging.domain.topology.Cluster(
@@ -89,7 +88,7 @@ public class ClusterCreatedEvent extends TopologyEvent {
                 clusterCreatedEvent = new org.apache.stratos.messaging.event.topology.ClusterCreatedEvent(serviceName, clusterId, cluster1);
 
         topologyPublisher.publish(clusterCreatedEvent);
-        if (log.isInfoEnabled()){
+        if (log.isInfoEnabled()) {
             log.info(this.getClass().toString() + " Event published: " + this);
         }
     }

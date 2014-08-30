@@ -120,7 +120,7 @@ public class TopologyEventGenerator implements Runnable {
         Service service3 = generateService(topology, "apistore");
         Cluster cluster3 = generateCluster(service3, "apistorestore.am.wso2.com.doma", "foo.org", " dep-pol1", "auto-scl-pol1");
         for (int i = 0; i < 2; i++) {
-           // generateMember(cluster3, "network-partition1", "cloud-partition1");
+            // generateMember(cluster3, "network-partition1", "cloud-partition1");
         }
         Member gatewayMember = new Member("gateway", "gatewaygateway.am.wso2.com.dom", "network-partition1", "cloud-partition1", "gatewaygateway.am.wso2.com.dom5863cf8d-2746-4be1-91e9-da98c2bcb5a9");
         gatewayMember.setMemberPublicIp("public IP");
@@ -129,7 +129,7 @@ public class TopologyEventGenerator implements Runnable {
         cluster1.addMember(gatewayMember);
 
 
-        Member apiStoreMember = new Member("apistore", "apistorestore.am.wso2.com.doma", "network-partition1", "cloud-partition1", "apistorestore.am.wso2.com.doma298e2959-a3b4-45a0-a11f-7671606158ed" );
+        Member apiStoreMember = new Member("apistore", "apistorestore.am.wso2.com.doma", "network-partition1", "cloud-partition1", "apistorestore.am.wso2.com.doma298e2959-a3b4-45a0-a11f-7671606158ed");
         apiStoreMember.setMemberIp("ip");
         apiStoreMember.setMemberPublicIp("pub ip");
         apiStoreMember.setStatus(MemberStatus.Activated);

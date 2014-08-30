@@ -24,6 +24,7 @@ import org.samples.apache.stratos.event.domain.tenant.SubscriptionDomain;
 import org.samples.apache.stratos.event.domain.tenant.Tenant;
 import org.samples.apache.stratos.event.domain.topology.*;
 import org.samples.apache.stratos.event.model.Wrapper;
+import org.samples.apache.stratos.event.model.action.SleepEvent;
 import org.samples.apache.stratos.event.model.health.stat.MemberFaultEvent;
 import org.samples.apache.stratos.event.model.instance.notifier.ArtifactUpdatedEvent;
 import org.samples.apache.stratos.event.model.instance.notifier.InstanceCleanupClusterEvent;
@@ -94,7 +95,9 @@ public class SampleConstants {
             Port.class,
             Scope.class,
             Service.class,
-           // ServiceType.class,
-            Topology.class
+            ServiceType.class,
+            Topology.class,
+
+            SleepEvent.class,
     };
 }
