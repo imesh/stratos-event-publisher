@@ -19,14 +19,13 @@
 
 package org.samples.apache.stratos.event;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
 import org.apache.stratos.messaging.util.Constants;
-import org.samples.apache.stratos.event.generator.HealthStatEventGenerator;
-import org.samples.apache.stratos.event.generator.TenantEventGenerator;
-import org.samples.apache.stratos.event.generator.TopologyEventGenerator;
-import org.samples.apache.stratos.event.listener.HealthStatListener;
-import org.samples.apache.stratos.event.listener.TopologyEventListener;
-import org.samples.apache.stratos.event.receiver.EventReceiver;
+import org.samples.apache.stratos.event.util.SampleConstants;
 
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -34,56 +33,62 @@ import java.net.URL;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    private static final Log log = LogFactory.getLog(Main.class);
+    private static SampleEventPublisher sampleEventPublisher = null;
+
+    private static void configure() {
         URL path = Main.class.getResource("/");
-        if (System.getProperty("jndi.properties.dir") == null || System.getProperty("jndi.properties.dir").equals("") ){
-            System.setProperty("jndi.properties.dir", path.getFile());
+        if (System.getProperty(SampleConstants.JNDI_PROPERTIES_SYSTEM_PROPERTY) == null ||
+                System.getProperty(SampleConstants.JNDI_PROPERTIES_SYSTEM_PROPERTY).equals("")) {
+            System.setProperty(SampleConstants.JNDI_PROPERTIES_SYSTEM_PROPERTY, path.getFile());
         }
-        initMessageProcessor();
-        initReceivers();
-        initGenerators();
+
+        if (System.getProperty(SampleConstants.EVENT_USER_DATA_PATH) == null ||
+                System.getProperty(SampleConstants.EVENT_USER_DATA_PATH).equals("")) {
+            System.setProperty(SampleConstants.EVENT_USER_DATA_PATH, path.getFile() + File.separator + "SampleEvents.xml");
+        }
     }
 
-    private static void initGenerators() {
-        TopologyEventGenerator topologyEventGenerator = new TopologyEventGenerator(0);
-        Thread topologyGeneratorThread = new Thread(topologyEventGenerator);
-        topologyGeneratorThread.start();
+    public static void main(String[] args) {
+        try {
+            // Add shutdown hook
+            final Thread mainThread = Thread.currentThread();
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    try {
+                        // Close event publisher connections to message broker
+                        EventPublisherPool.close(Constants.INSTANCE_STATUS_TOPIC);
+                        EventPublisherPool.close(Constants.HEALTH_STAT_TOPIC);
+                        EventPublisherPool.close(Constants.TENANT_TOPIC);
+                        EventPublisherPool.close(Constants.TOPOLOGY_TOPIC);
+                        EventPublisherPool.close(Constants.INSTANCE_NOTIFIER_TOPIC);
+                        mainThread.join();
+                    } catch (Exception e) {
+                        log.error(e);
+                    }
+                }
+            });
 
-        TenantEventGenerator tenantEventGenerator = new TenantEventGenerator(0);
-        Thread tenantGeneratorThread = new Thread(tenantEventGenerator);
-        tenantGeneratorThread.start();
+            // set system properties
+            configure();
 
-        HealthStatEventGenerator healthStatEventGenerator = new HealthStatEventGenerator(1);
-        Thread healthStatGeneratorThread = new Thread(healthStatEventGenerator);
-        healthStatGeneratorThread.start();
+            if (sampleEventPublisher == null) {
+                sampleEventPublisher = new SampleEventPublisher();
+                if (log.isDebugEnabled()) {
+                    log.debug("Starting Sample Event Publisher...");
+                }
+            }
+            // start sample event publisher
+            Thread thread = new Thread(sampleEventPublisher);
+            thread.start();
+        } catch (Exception e) {
+            if (log.isErrorEnabled()) {
+                log.error(e);
+            }
+            if (sampleEventPublisher != null) {
+                sampleEventPublisher.terminate();
+            }
+        }
+
     }
-
-    private static void initReceivers() {
-        EventReceiver topologyReceiver = new EventReceiver(Constants.TOPOLOGY_TOPIC);
-        Thread topologyReceiverThread = new Thread(topologyReceiver);
-        topologyReceiverThread.start();
-
-        EventReceiver instanceNotifierReceiver = new EventReceiver(Constants.INSTANCE_NOTIFIER_TOPIC);
-        Thread instanceNotifierReceiverThread = new Thread(instanceNotifierReceiver);
-        instanceNotifierReceiverThread.start();
-
-        EventReceiver instanceStatusReceiver = new EventReceiver(Constants.INSTANCE_STATUS_TOPIC);
-        Thread instanceStatusReceiverThread = new Thread(instanceStatusReceiver);
-        instanceStatusReceiverThread.start();
-
-        EventReceiver healthStatReceiver = new EventReceiver(Constants.HEALTH_STAT_TOPIC);
-        Thread healthStatReceiverThread = new Thread(healthStatReceiver);
-        healthStatReceiverThread.start();
-
-        EventReceiver tenantReceiver = new EventReceiver(Constants.TENANT_TOPIC);
-        Thread tenantReceiverThread = new Thread(tenantReceiver);
-        tenantReceiverThread.start();
-    }
-
-    private static void initMessageProcessor() {
-        MessageProcessor.addMessageListener(Constants.TOPOLOGY_TOPIC, new TopologyEventListener());
-        MessageProcessor.addMessageListener(Constants.HEALTH_STAT_TOPIC, new HealthStatListener());
-    }
-
-
 }

@@ -9,7 +9,13 @@
     <name>Apache Stratos Sample Event Publisher</name>
     <version>1.0.0-SNAPSHOT</version> 
 
-    <!--repositories>
+    <repositories>
+
+        <repository>
+            <id>central</id>
+            <url>http://repo.maven.apache.org/maven2/</url>
+        </repository>
+
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>
@@ -20,11 +26,31 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-    </repositories-->
+
+    </repositories>
 
     <dependencies>
 
-        <!--dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.wso2.andes.wso2</groupId>
             <artifactId>andes-client</artifactId>
             <version>0.13.wso2v8</version>
@@ -34,7 +60,7 @@
             <groupId>org.apache.geronimo.specs.wso2</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
             <version>1.1.0.wso2v1</version>
-        </dependency-->
+        </dependency>
 
         <dependency>
             <groupId>org.apache.activemq</groupId>
@@ -69,7 +95,7 @@
         <dependency>
             <groupId>org.apache.stratos</groupId>
             <artifactId>org.apache.stratos.messaging</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>4.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -81,6 +107,10 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
+                <excludes>
+                   <exclude>jndi.properties</exclude>
+                   <exclude>log4j.properties</exclude>
+                 </excludes>
                     <archive>
                         <manifest>
                             <mainClass>org.samples.apache.stratos.event.Main</mainClass>

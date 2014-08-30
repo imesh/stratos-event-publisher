@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SampleEvents>
+
+    <ServiceCreatedEvent>
+        <serviceName>service-2</serviceName>
+        <serviceType>SingleTenant</serviceType>
+        <portMap>
+            <entry>
+                <key>80</key>
+                <value>
+                    <protocol>http</protocol>
+                    <value>8080</value>
+                    <proxy>80</proxy>
+                </value>
+            </entry>
+        </portMap>
+
+        <properties>
+           <entry key="key2">val2</entry>
+           <entry key="key1">val1</entry>
+        </properties>        
+
+    </ServiceCreatedEvent>
+
+    <ClusterCreatedEvent>
+       <serviceName>service-2</serviceName>
+       <clusterId>cluster-2</clusterId>
+       <cluster>
+          <serviceName>service-2</serviceName>
+          <clusterId>cluster-2</clusterId>
+          <autoscalePolicyName>economy auto-scale policy</autoscalePolicyName>
+          <deploymentPolicyName>flat deployment policy</deploymentPolicyName>
+          <tenantRange>*</tenantRange>
+          <isLbCluster>false</isLbCluster>
+       </cluster>
+    </ClusterCreatedEvent>
+
+    <InstanceSpawnedEvent>
+       <serviceName>service-2</serviceName>
+       <clusterId>cluster-2</clusterId>
+        <memberId>member-1</memberId>
+        <partitionId>partitionId-1</partitionId>
+        <networkPartitionId>np-1</networkPartitionId>
+    </InstanceSpawnedEvent>
+
+    <InstanceStartedEvent>
+       <serviceName>service-2</serviceName>
+       <clusterId>cluster-2</clusterId>
+        <memberId>member-1</memberId>
+        <partitionId>partitionId-1</partitionId>
+        <networkPartitionId>np-1</networkPartitionId>
+    </InstanceStartedEvent>
+
+    <InstanceActivatedEvent>
+       <serviceName>service-2</serviceName>
+       <clusterId>cluster-2</clusterId>
+        <memberId>member-1</memberId>
+        <partitionId>partitionId-1</partitionId>
+        <networkPartitionId>np-1</networkPartitionId>
+    </InstanceActivatedEvent>
+
+    <MemberActivatedEvent>
+       <serviceName>service-2</serviceName>
+       <clusterId>cluster-2</clusterId>
+        <memberId>member-1</memberId>
+        <partitionId>partitionId-1</partitionId>
+        <networkPartitionId>np-1</networkPartitionId>
+    </MemberActivatedEvent>
+
+    <MemberFaultEvent>
+        <clusterId>cluster-2</clusterId>
+        <memberId>member-1</memberId>
+        <partitionId>partitionId-1</partitionId>
+        <value>value-1</value>
+    </MemberFaultEvent>
+
+    <MemberFaultEvent>
+        <clusterId>cluster-2</clusterId>
+        <memberId>member-2</memberId>
+        <partitionId>partitionId-2</partitionId>
+        <value>value-2</value>
+    </MemberFaultEvent>
+
+
+
+
+
+</SampleEvents>

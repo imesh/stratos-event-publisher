@@ -113,6 +113,7 @@ public class TopologyEventGenerator implements Runnable {
         Member lbMember = new Member("lb", "lbisuruh.lk.domain", "network-partition1", "cloud-partition1", "lb-member-id-1");
         lbMember.setMemberPublicIp("public IP of apistore");
         lbMember.setMemberIp("private IP of apistore");
+        lbMember.setStatus(MemberStatus.Activated);
         cluster1.addMember(lbMember);
 
 
@@ -124,6 +125,7 @@ public class TopologyEventGenerator implements Runnable {
         Member gatewayMember = new Member("gateway", "gatewaygateway.am.wso2.com.dom", "network-partition1", "cloud-partition1", "gatewaygateway.am.wso2.com.dom5863cf8d-2746-4be1-91e9-da98c2bcb5a9");
         gatewayMember.setMemberPublicIp("public IP");
         gatewayMember.setMemberIp("private IP");
+        gatewayMember.setStatus(MemberStatus.Activated);
         cluster1.addMember(gatewayMember);
 
 
@@ -132,6 +134,7 @@ public class TopologyEventGenerator implements Runnable {
         apiStoreMember.setMemberPublicIp("pub ip");
         apiStoreMember.setStatus(MemberStatus.Activated);
         apiStoreMember.setLbClusterId("lbmongolb594224131.mongolb.dom");
+        apiStoreMember.setStatus(MemberStatus.Activated);
         cluster3.addMember(apiStoreMember);
 
         // Send complete topology event
