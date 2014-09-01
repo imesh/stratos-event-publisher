@@ -25,3 +25,6 @@ target/
 # IntelliJ IDEA Project Files
 .idea/
 *.iml
+
+# Log files
+event-publisher.log

@@ -110,6 +110,7 @@
                     <excludes>
                         <exclude>jndi.properties</exclude>
                         <exclude>log4j.properties</exclude>
+                        <exclude>SampleEvents.xml</exclude>
                     </excludes>
                     <archive>
                         <manifest>
