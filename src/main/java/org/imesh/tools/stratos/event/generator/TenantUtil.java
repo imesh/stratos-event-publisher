@@ -1,6 +1,5 @@
 package org.imesh.tools.stratos.event.generator;
 
-import org.apache.stratos.messaging.domain.tenant.Subscription;
 import org.apache.stratos.messaging.domain.tenant.Tenant;
 import org.apache.stratos.messaging.domain.topology.Cluster;
 import org.apache.stratos.messaging.domain.topology.Service;
@@ -28,11 +27,7 @@ public class TenantUtil {
             for(Cluster cluster : service.getClusters()) {
                 clusterIds.add(cluster.getClusterId());
             }
-            Subscription subscription = new Subscription(service.getServiceName(), clusterIds);
-            subscription.addSubscriptionDomain("foo1.org", "carbon/t/foo1.org");
-            subscription.addSubscriptionDomain("foo2.org", "/some/app/context");
-            subscription.addSubscriptionDomain("foo3.org", "/some/app/context/");
-            tenant2.addSubscription(subscription);
+
         }
         tenants.add(tenant2);
 

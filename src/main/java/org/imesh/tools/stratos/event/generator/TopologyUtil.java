@@ -1,5 +1,6 @@
 package org.imesh.tools.stratos.event.generator;
 
+import org.apache.stratos.common.domain.LoadBalancingIPType;
 import org.apache.stratos.messaging.domain.topology.*;
 import org.apache.stratos.messaging.event.topology.CompleteTopologyEvent;
 
@@ -43,7 +44,7 @@ public class TopologyUtil {
 
     private static Cluster generateCluster(Service service, String hostName, String deploymentPolicy, String autoscalingPolicy) {
         int instance = service.getClusters().size() + 1;
-        Cluster cluster = new Cluster(service.getServiceName(), service.getServiceName() + "-cluster" + instance, deploymentPolicy, autoscalingPolicy);
+        Cluster cluster = new Cluster(service.getServiceName(),  "cluster-id" + instance, deploymentPolicy, autoscalingPolicy,"app-id");
         cluster.addHostName(hostName);
         cluster.setTenantRange("1-*");
         service.addCluster(cluster);
@@ -52,11 +53,13 @@ public class TopologyUtil {
 
     private static Member generateMember(Cluster cluster, String networkPartitionId, String partitionId) {
         int instance = cluster.getMembers().size() + 1;
-        Member member = new Member(cluster.getServiceName(), cluster.getClusterId(), networkPartitionId, partitionId, cluster.getClusterId() + "-member-" + instance);
-        member.setMemberIp("127.0.0.1");
-        member.setMemberPublicIp("127.0.0.1");
+        Member member=new Member(cluster.getServiceName(),cluster.getClusterId(),"member-id","instance-id",
+                networkPartitionId,partitionId,LoadBalancingIPType.Private,System.currentTimeMillis());
+       // Member member1 = new Member(cluster.getServiceName(), cluster.getClusterId(), networkPartitionId, partitionId, cluster.getClusterId() + "-member-" + instance);
+        member.setDefaultPrivateIP("127.0.0.1");
+        member.setDefaultPublicIP("127.0.0.1");
         member.addPort(new Port("https", 9448, 8243));
-        member.setStatus(MemberStatus.Activated);
+        member.setStatus(MemberStatus.Active);
         cluster.addMember(member);
         return member;
     }
