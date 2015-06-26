@@ -28,7 +28,6 @@ properties="-Djndi.properties.dir=${script_path}/../conf
             -Dlog4j.properties.file.path=${script_path}/../conf/log4j.properties
             -Devents.dir=${script_path}/../events"
 
-echo ${script_path}
 # Uncomment below line to enable remote debugging
 #debug="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
 
