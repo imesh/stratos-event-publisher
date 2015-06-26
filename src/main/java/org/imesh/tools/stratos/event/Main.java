@@ -36,16 +36,16 @@ public class Main {
         PropertyConfigurator.configure(System.getProperty("log4j.properties.file.path", "src/main/conf/log4j.properties"));
         System.setProperty("jndi.properties.dir", System.getProperty("jndi.properties.dir", "src/main/conf"));
 
-        TopologyEventGenerator topologyEventGenerator = new TopologyEventGenerator("topology", 1);
-        Thread topologyEventGeneratorThread = new Thread(topologyEventGenerator);
-        topologyEventGeneratorThread.start();
+//        TopologyEventGenerator topologyEventGenerator = new TopologyEventGenerator("topology", 1);
+//        Thread topologyEventGeneratorThread = new Thread(topologyEventGenerator);
+//        topologyEventGeneratorThread.start();
 
-//        EventReceiver receiver = new EventReceiver("topology");
-//        Thread receiverThread = new Thread(receiver);
-//        receiverThread.start();
+        EventReceiver receiver = new EventReceiver("instance.status.InstanceStartedEvent");
+        Thread receiverThread = new Thread(receiver);
+        receiverThread.start();
 
-        TenantEventGenerator tenantEventGenerator = new TenantEventGenerator("tenant", 1);
-        Thread tenantEventGeneratorThread = new Thread(tenantEventGenerator);
-        tenantEventGeneratorThread.start();
+//        TenantEventGenerator tenantEventGenerator = new TenantEventGenerator("tenant", 1);
+//        Thread tenantEventGeneratorThread = new Thread(tenantEventGenerator);
+//        tenantEventGeneratorThread.start();
     }
 }
