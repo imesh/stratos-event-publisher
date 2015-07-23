@@ -19,7 +19,7 @@
 
 package org.samples.apache.stratos.event.util;
 
-import org.samples.apache.stratos.event.model.Wrapper;
+import org.samples.apache.stratos.event.event.Wrapper;
 
 import javax.xml.bind.*;
 import javax.xml.namespace.QName;

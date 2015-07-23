@@ -19,12 +19,7 @@
 
 package org.samples.apache.stratos.event.domain.tenant;
 
-import org.apache.stratos.messaging.domain.tenant.Subscription;
-
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Tenant definition.
@@ -35,8 +30,6 @@ public class Tenant {
 
     private int tenantId;
     private String tenantDomain;
-    // Map<ServiceName, Subscription>
-    private Map<String, Subscription> serviceNameSubscriptionMap;
 
     public Tenant() {
     }
@@ -44,7 +37,6 @@ public class Tenant {
     public Tenant(int tenantId, String tenantDomain) {
         this.tenantId = tenantId;
         this.tenantDomain = tenantDomain;
-        this.serviceNameSubscriptionMap = new HashMap<String, Subscription>();
     }
 
     public int getTenantId() {
@@ -63,34 +55,5 @@ public class Tenant {
         this.tenantDomain = tenantDomain;
     }
 
-    public Subscription getSubscription(String serviceName) {
-        if (serviceNameSubscriptionMap.containsKey(serviceName)) {
-            return serviceNameSubscriptionMap.get(serviceName);
-        }
-        return null;
-    }
 
-    public Collection<Subscription> getSubscriptions() {
-        return serviceNameSubscriptionMap.values();
-    }
-
-    public boolean isSubscribed(String serviceName) {
-        return serviceNameSubscriptionMap.containsKey(serviceName);
-    }
-
-    public void addSubscription(Subscription subscription) {
-        serviceNameSubscriptionMap.put(subscription.getServiceName(), subscription);
-    }
-
-    public void removeSubscription(String serviceName) {
-        serviceNameSubscriptionMap.remove(serviceName);
-    }
-
-    public Map<String, Subscription> getServiceNameSubscriptionMap() {
-        return serviceNameSubscriptionMap;
-    }
-
-    public void setServiceNameSubscriptionMap(Map<String, Subscription> serviceNameSubscriptionMap) {
-        this.serviceNameSubscriptionMap = serviceNameSubscriptionMap;
-    }
 }

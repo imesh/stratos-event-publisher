@@ -22,18 +22,19 @@ package org.samples.apache.stratos.event;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
-import org.apache.stratos.messaging.util.Constants;
+import org.apache.stratos.messaging.util.MessagingUtil;
 import org.samples.apache.stratos.event.util.SampleConstants;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 
 /**
  * Run this main class to send a set of sample topology events.
  */
 public class Main {
 
-    private static final Log log = LogFactory.getLog(Main.class);
+    private static final Log logger = LogFactory.getLog(Main.class);
     private static SampleEventPublisher sampleEventPublisher = null;
 
     private static void configure() {
@@ -45,11 +46,16 @@ public class Main {
 
         if (System.getProperty(SampleConstants.EVENT_USER_DATA_PATH) == null ||
                 System.getProperty(SampleConstants.EVENT_USER_DATA_PATH).equals("")) {
-            System.setProperty(SampleConstants.EVENT_USER_DATA_PATH, path.getFile() + File.separator + "SampleEvents.xml");
+            System.setProperty(SampleConstants.EVENT_USER_DATA_PATH,
+                    path.getFile() + File.separator + "SampleEvents.xml");
         }
     }
 
     public static void main(String[] args) {
+        init(args);
+    }
+
+    private static void init(String[] args) {
         try {
             // Add shutdown hook
             final Thread mainThread = Thread.currentThread();
@@ -57,14 +63,15 @@ public class Main {
                 public void run() {
                     try {
                         // Close event publisher connections to message broker
-                        EventPublisherPool.close(Constants.INSTANCE_STATUS_TOPIC);
-                        EventPublisherPool.close(Constants.HEALTH_STAT_TOPIC);
-                        EventPublisherPool.close(Constants.TENANT_TOPIC);
-                        EventPublisherPool.close(Constants.TOPOLOGY_TOPIC);
-                        EventPublisherPool.close(Constants.INSTANCE_NOTIFIER_TOPIC);
+                        EventPublisherPool.close(MessagingUtil.Topics.INSTANCE_STATUS_TOPIC.getTopicName());
+                        EventPublisherPool.close(MessagingUtil.Topics.HEALTH_STAT_TOPIC.getTopicName());
+                        EventPublisherPool.close(MessagingUtil.Topics.TENANT_TOPIC.getTopicName());
+                        EventPublisherPool.close(MessagingUtil.Topics.TOPOLOGY_TOPIC.getTopicName());
+                        EventPublisherPool.close(MessagingUtil.Topics.INSTANCE_NOTIFIER_TOPIC.getTopicName());
                         mainThread.join();
-                    } catch (Exception e) {
-                        log.error(e);
+                    }
+                    catch (Exception e) {
+                        logger.error(e);
                     }
                 }
             });
@@ -73,22 +80,29 @@ public class Main {
             configure();
 
             if (sampleEventPublisher == null) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Starting Sample Event Publisher...");
+                }
                 sampleEventPublisher = new SampleEventPublisher();
-                if (log.isDebugEnabled()) {
-                    log.debug("Starting Sample Event Publisher...");
+                if (Arrays.asList(args).contains(SampleConstants.ENABLE_PUBLISHER)) {
+                    logger.info("Event publisher is enabled.");
+                    sampleEventPublisher.setIsPublisherEnabled(true);
                 }
             }
             // start sample event publisher
             Thread thread = new Thread(sampleEventPublisher);
             thread.start();
-        } catch (Exception e) {
-            if (log.isErrorEnabled()) {
-                log.error(e);
+        }
+        catch (Exception e) {
+            if (logger.isErrorEnabled()) {
+                logger.error(e);
             }
             if (sampleEventPublisher != null) {
                 sampleEventPublisher.terminate();
             }
         }
-
     }
+
 }
+
+

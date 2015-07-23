@@ -19,6 +19,7 @@
 
 package org.samples.apache.stratos.event.domain.topology;
 
+import org.samples.apache.stratos.event.domain.instance.ClusterInstance;
 import org.samples.apache.stratos.event.util.PropertiesAdaptor;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -31,7 +32,7 @@ import java.util.*;
  * Key: serviceName, clusterId
  */
 
-@XmlType
+@XmlType(name = "Cluster")
 public class Cluster {
 
     private String serviceName;
@@ -43,11 +44,15 @@ public class Cluster {
     private String tenantRange;
     private boolean isLbCluster;
 
-    // Key: Member.memberId
+    private boolean isKubernetesCluster;
 
     private Map<String, Member> memberMap;
 
-    private ClusterStatus status;
+    private String appId;
+    private String parentId;
+    private Map<String, ClusterInstance> instanceIdToInstanceContextMap;
+    private List<String> accessUrls;
+    private List<KubernetesService> kubernetesServices;
 
     private String loadBalanceAlgorithmName;
 
@@ -130,20 +135,66 @@ public class Cluster {
         this.memberMap = memberMap;
     }
 
-    public ClusterStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ClusterStatus status) {
-        this.status = status;
-    }
-
     public String getLoadBalanceAlgorithmName() {
         return loadBalanceAlgorithmName;
     }
 
     public void setLoadBalanceAlgorithmName(String loadBalanceAlgorithmName) {
         this.loadBalanceAlgorithmName = loadBalanceAlgorithmName;
+    }
+
+    public void setIsLbCluster(boolean isLbCluster) {
+        this.isLbCluster = isLbCluster;
+    }
+
+    public boolean isKubernetesCluster() {
+        return isKubernetesCluster;
+    }
+
+    public void setIsKubernetesCluster(boolean isKubernetesCluster) {
+        this.isKubernetesCluster = isKubernetesCluster;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public Map<String, ClusterInstance> getInstanceIdToInstanceContextMap() {
+        return instanceIdToInstanceContextMap;
+    }
+
+    public void setInstanceIdToInstanceContextMap(
+            Map<String, ClusterInstance> instanceIdToInstanceContextMap) {
+        this.instanceIdToInstanceContextMap = instanceIdToInstanceContextMap;
+    }
+
+    public List<String> getAccessUrls() {
+        return accessUrls;
+    }
+
+    public void setAccessUrls(List<String> accessUrls) {
+        this.accessUrls = accessUrls;
+    }
+
+    public List<KubernetesService> getKubernetesServices() {
+        return kubernetesServices;
+    }
+
+    public void setKubernetesServices(
+            List<KubernetesService> kubernetesServices) {
+        this.kubernetesServices = kubernetesServices;
     }
 
     @XmlElement
@@ -156,13 +207,5 @@ public class Cluster {
         this.properties = properties;
     }
 
-    @Override
-    public String toString() {
-        return String.format("[service] %s , [cluster-id] %s , [autoscale-policy] %s , [deployment-policy] %s , " +
-                        "[hostnames] %s , [tenant-range] %s , [is-lb-cluster] %s , [member-map] %s , [status] %s , [algo] %s , [properties] %s",
-                serviceName, clusterId, autoscalePolicyName, deploymentPolicyName, hostNames, tenantRange, isLbCluster,
-                memberMap, status, loadBalanceAlgorithmName, properties
-        );
-    }
 }
 

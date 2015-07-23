@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.stratos.messaging.broker.publish.EventPublisher;
 import org.apache.stratos.messaging.broker.publish.EventPublisherPool;
 import org.apache.stratos.messaging.event.Event;
-import org.apache.stratos.messaging.util.Constants;
+import org.apache.stratos.messaging.util.MessagingUtil;
 
 import java.util.List;
 
@@ -44,17 +44,20 @@ public class HealthStatEventGenerator implements Runnable {
     }
 
 
-    @Override
     public void run() {
-        EventPublisher healthStatPublisher = EventPublisherPool.getPublisher(Constants.HEALTH_STAT_TOPIC);
+        EventPublisher healthStatPublisher =
+                EventPublisherPool.getPublisher(MessagingUtil.Topics.HEALTH_STAT_TOPIC.getTopicName());
 
-
+        for (Event event : events){
+            healthStatPublisher.publish(event);
+        }
         for (int i = 0; i < count; i++) {
             try {
                 log.info("Generating sample HealthStat event...");
 
                 Thread.sleep(TIME_INTERVAL);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 log.error(e);
             }
         }

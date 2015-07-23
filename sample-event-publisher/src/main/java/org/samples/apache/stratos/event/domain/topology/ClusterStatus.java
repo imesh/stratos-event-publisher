@@ -24,8 +24,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ClusterStatus")
 public enum ClusterStatus {
     Created(1),
-    In_Maintenance(2),
-    Removed(3);
+    Active(1),
+    Patching(2),
+    Inactive(3),
+    Terminating(4),
+    Terminated(5);
 
     private int code;
 

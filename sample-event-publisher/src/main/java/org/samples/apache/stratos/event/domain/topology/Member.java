@@ -19,7 +19,14 @@
 
 package org.samples.apache.stratos.event.domain.topology;
 
+
+import org.samples.apache.stratos.event.domain.LoadBalancingIPType;
+import org.samples.apache.stratos.event.domain.topology.lifecycle.LifeCycleStateManager;
+import org.samples.apache.stratos.event.util.PropertiesAdaptor;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
@@ -29,38 +36,25 @@ import java.util.*;
 
 @XmlType(name = "Member")
 public class Member {
-
     private String serviceName;
     private String clusterId;
     private String networkPartitionId;
     private String partitionId;
     private String memberId;
-
-    // Key: Port.proxy
-
+    private String clusterInstanceId;
+    private long initTime;
     private Map<Integer, Port> portMap;
-
-
-    private String memberPublicIp;
-    private MemberStatus status;
-    private String memberIp;
-
-
+    private List<String> memberPublicIPs;
+    private String defaultPublicIP;
+    private List<String> memberPrivateIPs;
+    private String defaultPrivateIP;
     private Properties properties;
-
     private String lbClusterId;
+    private LifeCycleStateManager<MemberStatus> memberStateManager;
+    private LoadBalancingIPType loadBalancingIPType;
 
     public Member() {
 
-    }
-
-    public Member(String serviceName, String clusterId, String networkPartitionId, String partitionId, String memberId) {
-        this.serviceName = serviceName;
-        this.clusterId = clusterId;
-        this.networkPartitionId = networkPartitionId;
-        this.partitionId = partitionId;
-        this.memberId = memberId;
-        this.portMap = new HashMap<Integer, Port>();
     }
 
     public String getServiceName() {
@@ -87,17 +81,6 @@ public class Member {
         this.memberId = memberId;
     }
 
-    public MemberStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(MemberStatus status) {
-        this.status = status;
-    }
-
-    public boolean isActive() {
-        return (this.status == MemberStatus.Activated);
-    }
 
     public Collection<Port> getPorts() {
         return Collections.unmodifiableCollection(portMap.values());
@@ -128,6 +111,8 @@ public class Member {
         return this.portMap.containsKey(port.getProxy());
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter(PropertiesAdaptor.class)
     public Properties getProperties() {
         return properties;
     }
@@ -136,13 +121,6 @@ public class Member {
         this.properties = properties;
     }
 
-    public String getMemberIp() {
-        return memberIp;
-    }
-
-    public void setMemberIp(String memberIp) {
-        this.memberIp = memberIp;
-    }
 
     public String getPartitionId() {
         return partitionId;
@@ -168,20 +146,77 @@ public class Member {
         this.networkPartitionId = networkPartitionId;
     }
 
-    public String getMemberPublicIp() {
-        return memberPublicIp;
-    }
-
-    public void setMemberPublicIp(String memberPublicIp) {
-        this.memberPublicIp = memberPublicIp;
-    }
-
     public Map<Integer, Port> getPortMap() {
         return portMap;
     }
 
     public void setPortMap(Map<Integer, Port> portMap) {
         this.portMap = portMap;
+    }
+
+    public String getClusterInstanceId() {
+        return clusterInstanceId;
+    }
+
+    public void setClusterInstanceId(String clusterInstanceId) {
+        this.clusterInstanceId = clusterInstanceId;
+    }
+
+    public long getInitTime() {
+        return initTime;
+    }
+
+    public void setInitTime(long initTime) {
+        this.initTime = initTime;
+    }
+
+    public List<String> getMemberPublicIPs() {
+        return memberPublicIPs;
+    }
+
+    public void setMemberPublicIPs(List<String> memberPublicIPs) {
+        this.memberPublicIPs = memberPublicIPs;
+    }
+
+    public String getDefaultPublicIP() {
+        return defaultPublicIP;
+    }
+
+    public void setDefaultPublicIP(String defaultPublicIP) {
+        this.defaultPublicIP = defaultPublicIP;
+    }
+
+    public List<String> getMemberPrivateIPs() {
+        return memberPrivateIPs;
+    }
+
+    public void setMemberPrivateIPs(List<String> memberPrivateIPs) {
+        this.memberPrivateIPs = memberPrivateIPs;
+    }
+
+    public String getDefaultPrivateIP() {
+        return defaultPrivateIP;
+    }
+
+    public void setDefaultPrivateIP(String defaultPrivateIP) {
+        this.defaultPrivateIP = defaultPrivateIP;
+    }
+
+    public LifeCycleStateManager<MemberStatus> getMemberStateManager() {
+        return memberStateManager;
+    }
+
+    public void setMemberStateManager(
+            LifeCycleStateManager<MemberStatus> memberStateManager) {
+        this.memberStateManager = memberStateManager;
+    }
+
+    public LoadBalancingIPType getLoadBalancingIPType() {
+        return loadBalancingIPType;
+    }
+
+    public void setLoadBalancingIPType(LoadBalancingIPType loadBalancingIPType) {
+        this.loadBalancingIPType = loadBalancingIPType;
     }
 }
 

@@ -19,7 +19,11 @@
 
 package org.samples.apache.stratos.event.domain.topology;
 
+import org.samples.apache.stratos.event.util.PropertiesAdaptor;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
@@ -29,7 +33,6 @@ import java.util.*;
 
 @XmlType(name = "Service")
 public class Service {
-
     private String serviceName;
     private ServiceType serviceType;
     // Key: Cluster.clusterId
@@ -40,13 +43,6 @@ public class Service {
 
     public Service() {
 
-    }
-
-    public Service(String serviceName, ServiceType serviceType) {
-        this.serviceName = serviceName;
-        this.serviceType = serviceType;
-        this.clusterIdClusterMap = new HashMap<String, Cluster>();
-        this.portMap = new HashMap<Integer, Port>();
     }
 
     public String getServiceName() {
@@ -118,19 +114,14 @@ public class Service {
         return this.portMap.containsKey(port.getProxy());
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter(PropertiesAdaptor.class)
     public Properties getProperties() {
         return properties;
     }
 
     public void setProperties(Properties properties) {
         this.properties = properties;
-    }
-
-    @Override
-    public String toString() {
-        return "Service [serviceName=" + serviceName + ", serviceType=" + serviceType +
-                ", clusterIdClusterMap=" + clusterIdClusterMap + ", portMap=" + portMap +
-                ", properties=" + properties + "]";
     }
 
     public Map<String, Cluster> getClusterIdClusterMap() {

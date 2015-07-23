@@ -81,11 +81,6 @@ public class Topology {
         this.initialized = initialized;
     }
 
-    @Override
-    public String toString() {
-        return "Topology [serviceMap=" + serviceMap + ", initialized=" + initialized + "]";
-    }
-
     public Map<String, Service> getServiceMap() {
         return serviceMap;
     }

@@ -23,8 +23,6 @@
     </ServiceCreatedEvent>
 
     <ClusterCreatedEvent>
-        <serviceName>service-2</serviceName>
-        <clusterId>cluster-2</clusterId>
         <cluster>
             <serviceName>service-2</serviceName>
             <clusterId>cluster-2</clusterId>
@@ -35,21 +33,6 @@
         </cluster>
     </ClusterCreatedEvent>
 
-    <InstanceSpawnedEvent>
-        <serviceName>service-2</serviceName>
-        <clusterId>cluster-2</clusterId>
-        <memberId>member-1</memberId>
-        <partitionId>partitionId-1</partitionId>
-        <networkPartitionId>np-1</networkPartitionId>
-    </InstanceSpawnedEvent>
-
-    <InstanceStartedEvent>
-        <serviceName>service-2</serviceName>
-        <clusterId>cluster-2</clusterId>
-        <memberId>member-1</memberId>
-        <partitionId>partitionId-1</partitionId>
-        <networkPartitionId>np-1</networkPartitionId>
-    </InstanceStartedEvent>
 
     <SleepEvent>
         <duration>5000</duration>
@@ -84,6 +67,13 @@
         <partitionId>partitionId-2</partitionId>
         <value>value-2</value>
     </MemberFaultEvent>
+
+    <ClusterStatusClusterActivatedEvent>
+        <serviceName>service-1</serviceName>
+        <clusterId>cluster-2</clusterId>
+        <appId>app-1</appId>
+        <instanceId>instance-1</instanceId>
+    </ClusterStatusClusterActivatedEvent>
 
 
 </SampleEvents>
