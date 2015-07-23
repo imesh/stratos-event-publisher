@@ -13,7 +13,7 @@ This tool can be used to publish custom events to a message broker. Stratos uses
 2. Add events to be published in <Sample_Publisher_Home>/data/SampleEvents.xml 
 3. Run `<Sample_Publisher_Home>/bin/run.sh publish`
 
-** You need to pass `publish` argument to publish the events provided. Otherwise it will only listen to events published by other components. **
+**You need to pass `publish` argument to publish the events provided. Otherwise it will only listen to events published by other components.**
 
 #### Maven execute
 1. Add events to be published in <Git_Repo>/sample-event-publisher/src/main/resources/SampleEvents.xml 
