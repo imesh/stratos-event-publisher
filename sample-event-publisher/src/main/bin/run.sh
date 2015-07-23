@@ -25,10 +25,11 @@ script_path="$( cd -P "$( dirname "$SOURCE" )" && pwd )/`dirname $0`"
 lib_path=${script_path}/../lib/
 class_path=`echo ${lib_path}/*.jar | tr ' ' ':'`
 properties="-Djndi.properties.dir=${script_path}/../conf
+            -Dcarbon.config.dir.path=${script_path}/../conf
             -Devent.user.data.path=${script_path}/../data/SampleEvents.xml
             -Dlog4j.configuration=file://${script_path}/../conf/log4j.properties"
 
 # Uncomment below line to enable remote debugging
 #debug="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
 
-java -cp "${class_path}" ${properties} ${debug} org.samples.apache.stratos.event.Main
+java -cp "${class_path}" ${properties} ${debug} org.samples.apache.stratos.event.Main $*

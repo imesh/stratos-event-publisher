@@ -55,6 +55,7 @@
             <fileMode>0600</fileMode>
             <includes>
                 <include>jndi.properties</include>
+                <include>mqtttopic.properties</include>
             </includes>
         </fileSet>
         <fileSet>
