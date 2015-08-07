@@ -36,6 +36,7 @@ public class ClusterInstanceActivatedEvent extends TopologyEvent implements Samp
     private String appId;
     private String instanceId;
     private List<KubernetesService> kubernetesServices;
+    private List<String> accessUrls;
 
     public ClusterInstanceActivatedEvent() {
     }
@@ -81,6 +82,14 @@ public class ClusterInstanceActivatedEvent extends TopologyEvent implements Samp
         this.kubernetesServices = kubernetesServices;
     }
 
+    public List<String> getAccessUrls() {
+        return accessUrls;
+    }
+
+    public void setAccessUrls(List<String> accessUrls) {
+        this.accessUrls = accessUrls;
+    }
+
     @Override
     public void process() {
 
@@ -98,7 +107,7 @@ public class ClusterInstanceActivatedEvent extends TopologyEvent implements Samp
             kubernetesService1.setPublicIPs(kubernetesService.getPublicIPs());
             kubernetesServices1.add(kubernetesService1);
         }
-        clusterInstanceActivatedEvent.setKubernetesServices(kubernetesServices1);
+        clusterInstanceActivatedEvent.setAccessUrls(accessUrls);
         Utils.publishEvent(clusterInstanceActivatedEvent);
     }
 }

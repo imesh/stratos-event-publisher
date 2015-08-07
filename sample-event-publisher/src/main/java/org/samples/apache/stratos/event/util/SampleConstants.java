@@ -50,7 +50,10 @@ import org.samples.apache.stratos.event.event.instance.status.InstanceActivatedE
 import org.samples.apache.stratos.event.event.instance.status.InstanceMaintenanceModeEvent;
 import org.samples.apache.stratos.event.event.instance.status.InstanceReadyToShutdownEvent;
 import org.samples.apache.stratos.event.event.instance.status.InstanceStartedEvent;
-import org.samples.apache.stratos.event.event.tenant.*;
+import org.samples.apache.stratos.event.event.tenant.CompleteTenantEvent;
+import org.samples.apache.stratos.event.event.tenant.TenantCreatedEvent;
+import org.samples.apache.stratos.event.event.tenant.TenantRemovedEvent;
+import org.samples.apache.stratos.event.event.tenant.TenantUpdatedEvent;
 import org.samples.apache.stratos.event.event.topology.*;
 
 public class SampleConstants {
@@ -80,10 +83,8 @@ public class SampleConstants {
             GroupInstanceTerminatedEvent.class,
             GroupInstanceTerminatingEvent.class,
             GroupMaintenanceModeEvent.class,
-            GroupReadyToShutdownEvent.class,
 
             ClusterStatusClusterActivatedEvent.class,
-            ClusterStatusClusterCreatedEvent.class,
             ClusterStatusClusterInactivateEvent.class,
             ClusterStatusClusterInstanceCreatedEvent.class,
             ClusterStatusClusterResetEvent.class,
@@ -107,8 +108,6 @@ public class SampleConstants {
             CompleteTenantEvent.class,
             TenantCreatedEvent.class,
             TenantRemovedEvent.class,
-            TenantSubscribedEvent.class,
-            TenantUnSubscribedEvent.class,
             TenantUpdatedEvent.class,
 
             ApplicationClustersCreatedEvent.class,

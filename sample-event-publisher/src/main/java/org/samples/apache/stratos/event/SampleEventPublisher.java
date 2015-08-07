@@ -537,6 +537,22 @@ public class SampleEventPublisher implements Runnable {
                 }
             }
         });
+
+        applicationsEventReceiver.addEventListener(new GroupMaintenanceModeEventListener() {
+            @Override
+            protected void onEvent(Event event) {
+                try {
+                    logger.info("GroupMaintenanceModeEvent event received");
+                    GroupMaintenanceModeEvent groupMaintenanceModeEvent = (GroupMaintenanceModeEvent) event;
+                    logger.info(
+                            "GroupMaintenanceModeEvent event: " + gson.toJson(groupMaintenanceModeEvent));
+                }
+                catch (Exception e) {
+                    logger.error("Error processing GroupMaintenanceModeEvent", e);
+                }
+            }
+        });
+
         eventListenerExecutorService.submit(new Runnable() {
             public void run() {
                 applicationsEventReceiver.execute();
@@ -563,22 +579,6 @@ public class SampleEventPublisher implements Runnable {
                 }
                 catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterActivatedEvent event", e);
-                }
-            }
-        });
-
-        clusterStatusEventReceiver.addEventListener(new ClusterStatusClusterCreatedEventListener() {
-            @Override
-            protected void onEvent(Event event) {
-                try {
-                    logger.info("ClusterStatusClusterCreatedEvent event received");
-                    ClusterStatusClusterCreatedEvent clusterStatusClusterCreatedEvent =
-                            (ClusterStatusClusterCreatedEvent) event;
-                    logger.info(
-                            "ClusterStatusClusterCreatedEvent event: " + gson.toJson(clusterStatusClusterCreatedEvent));
-                }
-                catch (Exception e) {
-                    logger.error("Error processing ClusterStatusClusterCreatedEvent event", e);
                 }
             }
         });
