@@ -1,0 +1,15 @@
+{
+    "id": "deployment-policy_kub",
+    "networkPartitions": [
+        {
+            "id": "network-partition_vagrant-kub",
+            "partitionAlgo": "one-after-another",
+            "partitions": [
+                {
+                    "id": "partition_vagrant-kub",
+                    "partitionMax": 20
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "deployment-policy-gce",
+    "networkPartitions": [
+        {
+            "id": "network-partition-gce",
+            "partitionAlgo": "one-after-another",
+            "partitions": [
+                {
+                    "id": "partition-1",
+                    "partitionMax": 20
+                }
+            ]
+        }
+    ]
+}

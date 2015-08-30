@@ -1,0 +1,15 @@
+{
+    "id": "network-partition_vagrant-kub",
+    "provider": "kubernetes",
+    "partitions": [
+        {
+            "id": "partition_vagrant-kub",
+            "property": [
+                {
+                    "name": "cluster",
+                    "value": "kubernetes-cluster_vagrant-kub"
+                }
+            ]
+        }
+    ]
+}

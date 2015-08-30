@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+  #  Licensed to the Apache Software Foundation (ASF) under one
+  #  or more contributor license agreements.  See the NOTICE file
+  #  distributed with this work for additional information
+  #  regarding copyright ownership.  The ASF licenses this file
+  #  to you under the Apache License, Version 2.0 (the
+  #  "License"); you may not use this file except in compliance
+  #  with the License.  You may obtain a copy of the License at
+  #  
+  #  http://www.apache.org/licenses/LICENSE-2.0
+  #  
+  #  Unless required by applicable law or agreed to in writing,
+  #  software distributed under the License is distributed on an
+  #  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  #  KIND, either express or implied.  See the License for the
+  #  specific language governing permissions and limitations
+  #  under the License.
+  -->
+<cloudController xmlns:svns="http://org.wso2.securevault/configuration">
+    <svns:secureVault provider="org.wso2.securevault.secret.handler.SecretManagerSecretCallbackHandler"/>
+
+    <!-- BAM data publisher configuration -->
+    <dataPublisher enable="false">
+        <bamServer>
+            <!-- BAM server URL should be specified in carbon.xml -->
+            <adminUserName>admin</adminUserName>
+            <adminPassword svns:secretAlias="cloud.controller.bam.server.admin.password">admin</adminPassword>
+        </bamServer>
+        <!-- Default cron expression is '1 * * * * ? *' meaning 'first second of every minute'.
+             Optional element. -->
+        <cron>1 * * * * ? *</cron>
+    </dataPublisher>
+
+    <!-- Complete topology event publisher cron configuration -->
+    <topologySync enable="true">
+        <property name="cron" value="1 * * * * ? *"/>
+    </topologySync>
+
+    <!-- Specify the properties that are common to an IaaS here. This element
+        is not necessary [0..1]. But you can use this section to avoid specifying
+        same property over and over again. -->
+    <iaasProviders>
+        <iaasProvider type="openstack" name="Openstack">
+            <className>org.apache.stratos.cloud.controller.iaases.openstack.OpenstackIaas</className>
+            <provider>openstack-nova</provider>
+            <identity svns:secretAlias="cloud.controller.openstack.identity">Stratos:ravihansa</identity>
+            <credential svns:secretAlias="cloud.controller.openstack.credential">ravihansa</credential>
+            <property name="jclouds.endpoint" value="http://192.168.16.99:5000/v2.0" />
+            <property name="jclouds.openstack-nova.auto-create-floating-ips" value="false"/>
+            <property name="jclouds.api-version" value="2.0/" />
+            <property name="openstack.networking.provider" value="nova" />
+            <property name="keyPair" value="ravihansa-openstack" />
+            <property name="securityGroups" value="default" />
+        </iaasProvider>
+        <iaasProvider type="ec2" name="Amazon EC2">
+            <className>org.apache.stratos.cloud.controller.iaases.ec2.EC2Iaas</className>
+            <provider>aws-ec2</provider>
+            <identity svns:secretAlias="cloud.controller.ec2.identity">AKIAIP73SRHDHPEVCNFA</identity>
+            <credential svns:secretAlias="cloud.controller.ec2.credential">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</credential>
+            <property name="jclouds.ec2.ami-query" value="owner-id=742434826329;state=available;image-type=machine"/>
+            <property name="availabilityZone" value="us-east-1d"/>
+            <property name="securityGroups" value="test1"/>
+            <property name="autoAssignIp" value="true" />
+            <property name="keyPair" value="ravihansa-ec2"/>
+        </iaasProvider>
+        <iaasProvider type="gce" name="Google Compute Engine">
+            <className>org.apache.stratos.cloud.controller.iaases.gce.GCEIaas</className>
+            <provider>google-compute-engine</provider>
+            <identity svns:secretAlias="cloud.controller.ec2.identity">927532529864-e6o717nps4hpt2oh403ve44p6afgn6ko@developer.gserviceaccount.com</identity>
+            <credential svns:secretAlias="cloud.controller.ec2.credential">
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdVcCqcIhwo5EL
+2MWpqcSpG4wDQ+QeZhRp7f5R8HfjAyvOuPjuK6UzY+dDlnJvEJPwsDz15D3K/pzk
+zDs3RhIOxMpydcVHJqrX5PiTJp8HcJBgJYIqEChu6irfyqdntP6yB8U//A4q+qKS
+PxnWydTo8z+RQ6OCRkQ6X1quQnkCwaIlTFrD668ISw9YRR0sC2v8dH6pjHgov/SB
+Fq5BVbW5WLON7n/RkA0apc4DbxrLCDAYw+10BGQ9EZQrGkc/61GXHxm1ZpFWRQmB
+DS/E8ROZJTs+Pg2fxWu92WODPV/3wOq24pNVJFyuOgjy5KSdytBymUX+FxKOnHpz
+ypoQtkGLAgMBAAECggEBAIvLA5Lsxe3/BwNVqdrj4r62oSLNkcSIwp6UPaGkXYEw
+8h2NMHC+CtysaXEeHbMdMbVrgd6g216f99s6s2qbMbQ5mf81MQHVE3scENj+OdKs
+aztiWFLzZFmYalvJfhChOqQIT3RYimYZp5T1yAmV7zzD1LlHNeKseDa9Pp8SpN6S
+tMdzJNa9Gs2ahMdZ6yFydaJ1lc8Y15TCKzZQNguq9nS/uGGjpqCul9sB4s6Pdnsx
+oRMUau/vBqxiCFqZTA0FlhYBAVMf4Bh0R4i9oOPTF0nMnp7FThb4VEezf7iEPqdZ
+bdhRj8GHEDvd0M45lCa60cOb9YgQNf4YQkTeZ6CaLuECgYEAy60i4DMB6AlPJzEi
+zNjzptgpbGXSdRLS1yHA6lEKSMk4l3ahtl7+vjfrYYWPJ7LbpBVARDU/hDVqpKBk
+IpgYpc1gqon6xm+1K1MV+abfKaWulvKvZll7pcjjfLZ0liMZI2s56uhiws+SmPOu
+Y0fQ7lpVwlLMw0QmmIcTwXJTkNMCgYEAxcD1EGl+5SJlMG35Ues57M97a9v+/Oo3
+/mA+QshuzFBaJ398Fy63tl5xYi0GSkD2g7XVNqgtIvHwlI1Q0CN3vZzaLaDMb9C+
+37I6u3hhTGYw9SfZr8sisWP8t+0HAmMh2fItjPycPelRxF8lyOjPa8TvtLb8WC3Q
+DN0EKsp/2WkCgYA9TGJOr4tHVmXoGbWriS/raussoIhyi7PA43u4CaPavBS4IRAS
+Xwy0GwhQVW38OKw5+dtZq9zt4VWzLkJ01um0HNeW++fpiP0xiNP4SuynECI3c9qu
+Jwg7oPY2NoNoHDAYpNDNjhsLHoW0WsKFRrvuwGlHDrxpmD01cpHTiqDz2QKBgHqm
+VZhLRgfJUGc8HiE/ulp0yQC5nqmwfvAHMzZqZ8XSpEfRGt6p/AlhBAO3FyqgpgRE
+l6vhnLUKx4LrLs8Y4GA601rvWzyShH/rY9/4JqiizQSQJcSRQcAx2oEcwncpkspB
+GR1TY3hGqI8Z0C6Orm8R4vX7dAEg0OPZhIchty/ZAoGAedugAKrw2Mga4jKUqQzV
+iY5wDRbzplbW/fdvrmfFAOQ2I7/4Ka78eVyC6omLgtVvO8Y95Bznbvm4CwvBK16C
+QF9UOrOXMtgmlNJRVTsDlyXmVYASc2kRebDuPzv/TKzJDZHjRYGOzWA97+ec3PUr
+itAO/4xOAcDwmSINUEg2T3s=
+-----END PRIVATE KEY-----
+</credential>            
+            <property name="autoAssignIp" value="true" />
+            <property name="projectName" value="xz-fluent-cable-w"/>
+        </iaasProvider>
+        <iaasProvider type="kubernetes" name="Kubernetes">
+            <className>org.apache.stratos.cloud.controller.iaases.kubernetes.KubernetesIaas</className>
+            <provider>kubernetes</provider>
+            <identity svns:secretAlias="cloud.controller.kubernetes.identity">identity</identity>
+            <credential svns:secretAlias="cloud.controller.kubernetes.credential">credential</credential>
+        </iaasProvider>
+        <iaasProvider type="mock" name="Mock">
+            <className>org.apache.stratos.cloud.controller.iaases.mock.MockIaas</className>
+            <provider>mock</provider>
+            <identity svns:secretAlias="cloud.controller.mock.identity">identity</identity>
+            <credential svns:secretAlias="cloud.controller.mock.credential">credential</credential>
+            <property name="api.endpoint" value="https://localhost:9443/mock-iaas/api"/>
+        </iaasProvider>
+    </iaasProviders>
+</cloudController>

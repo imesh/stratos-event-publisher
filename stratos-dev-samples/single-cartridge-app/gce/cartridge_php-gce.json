@@ -1,0 +1,51 @@
+{
+    "type": "php-gce",
+    "provider": "apache",
+    "category": "framework",
+    "host": "php.stratos.org",
+    "displayName": "php",
+    "description": "php Cartridge on Google Compute Engine",
+    "version": "7",
+    "multiTenant": "false",
+    "portMapping": [
+        {
+            "name": "http-80",
+            "protocol": "http",
+            "port": "80",
+            "proxyPort": "8280"
+        },
+        {
+            "name": "tcp-22",
+            "protocol": "tcp",
+            "port": "22",
+            "proxyPort": "8222"
+        }
+    ],
+    "deployment": {
+    },
+    "iaasProvider": [
+        {
+            "type": "gce",
+            "imageId": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1404-trusty-v20150128",
+            "networkInterfaces": [
+                {
+                    "networkUuid": "default"
+                }
+            ],
+            "property": [
+                {
+                    "name": "availabilityZone",
+                    "value": "asia-east1-a"
+                },
+    	        {
+      	            "name": "instanceType",
+      	            "value": "https://www.googleapis.com/compute/v1/projects/xz-fluent-cable-w/zones/asia-east1-a/machineTypes/n1-standard-1"
+    	        },
+                {
+                    "name": "networkURI",
+      	            "value": "https://www.googleapis.com/compute/v1/projects/xz-fluent-cable-w/global/networks/default"
+                }
+            ]
+        }
+    ]
+}

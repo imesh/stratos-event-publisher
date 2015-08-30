@@ -1,0 +1,46 @@
+{
+    "type": "php-openstack",
+    "provider": "apache",
+    "category": "framework",
+    "host": "php.stratos.org",
+    "displayName": "php-openstack",
+    "description": "php Cartridge on OpenStack",
+    "version": "7",
+    "multiTenant": "false",
+    "portMapping": [
+        {
+            "name": "http-22",
+            "protocol": "http",
+            "port": "22",
+            "proxyPort": "8280"
+        }
+    ],
+    "deployment": {
+    },
+    "iaasProvider": [
+        {
+            "type": "openstack",
+            "imageId": "RegionOne/4c812285-d761-4208-b4b3-d453eace5aff",
+            "networkInterfaces": [
+                {
+                    "networkUuid": "512e1f54-1e85-4dac-b2e6-f0b30fc552cf"
+                }
+            ],
+            "property": [
+                {
+                    "name": "instanceType",
+                    "value": "RegionOne/15c3065c-462c-4977-9143-094d63d1c2c7"
+                },
+                {
+                    "name": "keyPair",
+                    "value": "ravihansa-openstack"
+                },
+                {
+                    "name": "securityGroups",
+                    "value": "default"
+                }
+            ]
+        }
+    ]
+}
+

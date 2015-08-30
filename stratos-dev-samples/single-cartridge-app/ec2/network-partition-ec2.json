@@ -1,0 +1,15 @@
+{
+    "id": "network-partition-ec2",
+    "provider": "ec2",
+    "partitions": [
+        {
+            "id": "partition-1",
+            "property": [
+                {
+                    "name": "region",
+                    "value": "us-east-1"
+                }
+            ]
+        }
+    ]
+}

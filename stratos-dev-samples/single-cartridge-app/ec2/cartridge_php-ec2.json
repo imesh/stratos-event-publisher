@@ -1,0 +1,42 @@
+{
+	"type": "php-ec2",
+	"category": "framework",
+	"provider": "apache",
+	"host": "php.stratos.org",
+	"displayName": "php",
+	"description": "php Cartridge",
+	"version": "7",
+	"multiTenant": true,
+	"portMapping": [
+		{
+			"protocol": "http",
+			"port": 80,
+			"proxyPort": 8280,
+			"name": "http-80"
+		}
+	],
+	"iaasProvider": [
+		{
+			"type": "ec2",
+			"imageId": "us-east-1/ami-dd7ba9b6",
+			"property": [
+				{
+					"name": "instanceType",
+					"value": "t1.micro"
+				},
+				{
+					"name": "keyPair",
+					"value": "ravihansa-ec2"
+				},
+				{
+					"name": "securityGroups",
+					"value": "test1"
+				}
+			],
+			"networkInterfaces": []
+		}
+	],
+	"property": [
+		
+	]
+}

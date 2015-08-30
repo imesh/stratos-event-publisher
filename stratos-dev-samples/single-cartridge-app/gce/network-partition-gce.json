@@ -1,0 +1,15 @@
+{
+    "id": "network-partition-gce",
+    "provider": "gce",
+    "partitions": [
+        {
+            "id": "partition-1",
+            "property": [
+                {
+                    "name": "region",
+                    "value": "asia-east1"
+                }
+            ]
+        }
+    ]
+}

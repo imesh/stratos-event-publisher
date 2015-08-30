@@ -1,0 +1,20 @@
+{
+    "applicationId": "single-cartridge-app-mock",
+    "alias": "single-cartridge-app-mock",
+    "multiTenant": false,
+    "components": {
+        "cartridges": [
+            {
+                "type": "php-mock",
+                "cartridgeMin": 1,
+                "cartridgeMax": 5,
+                "subscribableInfo": {
+                    "alias": "my-php-app-mock",
+                    "autoscalingPolicy": "autoscaling-policy-economy",
+                    "deploymentPolicy": "deployment-policy-mock",
+                   
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "id": "deployment-policy-openstack",
+    "networkPartitions": [
+        {
+            "id": "network-partition-openstack",
+            "partitionAlgo": "one-after-another",
+            "partitions": [
+                {
+                    "id": "partition-1",
+                    "partitionMax": 20
+                }
+            ]
+        }
+    ]
+}
