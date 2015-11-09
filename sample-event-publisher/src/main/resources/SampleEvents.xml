@@ -35,7 +35,7 @@
 
 
     <SleepEvent>
-        <duration>5000</duration>
+        <duration>1000</duration>
     </SleepEvent>
 
     <InstanceActivatedEvent>
@@ -75,5 +75,5 @@
         <instanceId>instance-1</instanceId>
     </ClusterStatusClusterActivatedEvent>
 
-
+    <CompleteTopologyRequestEvent/>
 </SampleEvents>

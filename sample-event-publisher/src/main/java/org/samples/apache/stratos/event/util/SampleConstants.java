@@ -43,6 +43,7 @@ import org.samples.apache.stratos.event.event.cluster.status.*;
 import org.samples.apache.stratos.event.event.domain.mapping.DomainMappingAddedEvent;
 import org.samples.apache.stratos.event.event.domain.mapping.DomainMappingRemovedEvent;
 import org.samples.apache.stratos.event.event.health.stat.MemberFaultEvent;
+import org.samples.apache.stratos.event.event.initializer.CompleteTopologyRequestEvent;
 import org.samples.apache.stratos.event.event.instance.notifier.ArtifactUpdatedEvent;
 import org.samples.apache.stratos.event.event.instance.notifier.InstanceCleanupClusterEvent;
 import org.samples.apache.stratos.event.event.instance.notifier.InstanceCleanupMemberEvent;
@@ -109,6 +110,8 @@ public class SampleConstants {
             TenantCreatedEvent.class,
             TenantRemovedEvent.class,
             TenantUpdatedEvent.class,
+
+            CompleteTopologyRequestEvent.class,
 
             ApplicationClustersCreatedEvent.class,
             ApplicationClustersRemovedEvent.class,

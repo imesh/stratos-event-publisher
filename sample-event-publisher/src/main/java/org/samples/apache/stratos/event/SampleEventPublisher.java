@@ -37,6 +37,7 @@ import org.apache.stratos.messaging.event.cluster.status.*;
 import org.apache.stratos.messaging.event.domain.mapping.DomainMappingAddedEvent;
 import org.apache.stratos.messaging.event.domain.mapping.DomainMappingRemovedEvent;
 import org.apache.stratos.messaging.event.health.stat.MemberFaultEvent;
+import org.apache.stratos.messaging.event.initializer.CompleteTopologyRequestEvent;
 import org.apache.stratos.messaging.event.instance.notifier.ArtifactUpdatedEvent;
 import org.apache.stratos.messaging.event.instance.notifier.InstanceCleanupClusterEvent;
 import org.apache.stratos.messaging.event.instance.notifier.InstanceCleanupMemberEvent;
@@ -52,6 +53,7 @@ import org.apache.stratos.messaging.listener.cluster.status.*;
 import org.apache.stratos.messaging.listener.domain.mapping.DomainMappingAddedEventListener;
 import org.apache.stratos.messaging.listener.domain.mapping.DomainMappingRemovedEventListener;
 import org.apache.stratos.messaging.listener.health.stat.MemberFaultEventListener;
+import org.apache.stratos.messaging.listener.initializer.CompleteTopologyRequestEventListener;
 import org.apache.stratos.messaging.listener.instance.notifier.ArtifactUpdateEventListener;
 import org.apache.stratos.messaging.listener.instance.notifier.InstanceCleanupClusterEventListener;
 import org.apache.stratos.messaging.listener.instance.notifier.InstanceCleanupMemberEventListener;
@@ -66,6 +68,7 @@ import org.apache.stratos.messaging.message.receiver.application.signup.Applicat
 import org.apache.stratos.messaging.message.receiver.cluster.status.ClusterStatusEventReceiver;
 import org.apache.stratos.messaging.message.receiver.domain.mapping.DomainMappingEventReceiver;
 import org.apache.stratos.messaging.message.receiver.health.stat.HealthStatEventReceiver;
+import org.apache.stratos.messaging.message.receiver.initializer.InitializerEventReceiver;
 import org.apache.stratos.messaging.message.receiver.instance.notifier.InstanceNotifierEventReceiver;
 import org.apache.stratos.messaging.message.receiver.tenant.TenantEventReceiver;
 import org.apache.stratos.messaging.message.receiver.tenant.TenantManager;
@@ -106,6 +109,7 @@ public class SampleEventPublisher implements Runnable {
     private HealthStatEventReceiver healthStatEventReceiver;
     private ClusterStatusEventReceiver clusterStatusEventReceiver;
     private DomainMappingEventReceiver domainMappingEventReceiver;
+    private InitializerEventReceiver initializerEventReceiver;
 
     public SampleEventPublisher() {
         if (logger.isDebugEnabled()) {
@@ -126,6 +130,8 @@ public class SampleEventPublisher implements Runnable {
         instanceNotifierEventReceiver = new InstanceNotifierEventReceiver();
         tenantEventReceiver = new TenantEventReceiver();
         tenantEventReceiver.setExecutorService(eventListenerExecutorService);
+        initializerEventReceiver = new InitializerEventReceiver();
+        initializerEventReceiver.setExecutorService(eventListenerExecutorService);
     }
 
     List<SampleEventInterface> loadSampleEventData() {
@@ -142,8 +148,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Unknown Sample Event read: " + sampleEventObj);
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.error("Error reading user data events: " + ex.getMessage());
             logger.error(ex.toString());
             ex.printStackTrace();
@@ -160,8 +165,7 @@ public class SampleEventPublisher implements Runnable {
                     try {
                         sampleEvent.process();
                         Thread.sleep(1000);
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         logger.error("Error processing Sample Event: " + ex.toString());
                         ex.printStackTrace();
                     }
@@ -174,6 +178,7 @@ public class SampleEventPublisher implements Runnable {
 
     public void run() {
         logger.info("Starting Sample Event Publisher...");
+        addInitializerEventListeners();
         addTopologyEventListeners();
         addTenantEventListeners();
         addInstanceNotifierEventListeners();
@@ -198,13 +203,11 @@ public class SampleEventPublisher implements Runnable {
                 }
                 logger.info("Complete Topology Task: " +
                         gson.toJson(TopologyManager.getTopology().getServices(), serviceType));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (logger.isErrorEnabled()) {
                     logger.error("Error in Sample Event Publisher main thread", e);
                 }
-            }
-            finally {
+            } finally {
                 TopologyManager.releaseReadLock();
             }
 
@@ -212,37 +215,57 @@ public class SampleEventPublisher implements Runnable {
                 ApplicationManager.acquireReadLockForApplications();
                 logger.info("Complete Application Task: " +
                         gson.toJson(ApplicationManager.getApplications()));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (logger.isErrorEnabled()) {
                     logger.error("Error in Sample Event Publisher main thread", e);
                 }
-            }
-            finally {
+            } finally {
                 ApplicationManager.releaseReadLockForApplications();
             }
 
             try {
                 TenantManager.acquireReadLock();
                 logger.info("Complete Tenant Task: " + gson.toJson(TenantManager.getInstance()));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (logger.isErrorEnabled()) {
                     logger.error("Error in Sample Event Publisher main thread", e);
                 }
-            }
-            finally {
+            } finally {
                 TenantManager.releaseReadLock();
             }
 
 
             try {
                 Thread.sleep(SampleConstants.THREAD_WAIT_TIME);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 logger.error("Error while sleeping", e);
             }
         }
+    }
+
+    private void addInitializerEventListeners() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Starting CompleteTopologyRequestEvent event message receiver thread...");
+        }
+        initializerEventReceiver.addEventListener(new CompleteTopologyRequestEventListener() {
+            @Override
+            protected void onEvent(Event event) {
+                try {
+                    logger.info("CompleteTopologyRequestEvent event received");
+                    CompleteTopologyRequestEvent completeTopologyRequestEvent = (CompleteTopologyRequestEvent) event;
+                    logger.info("CompleteTopologyRequestEvent event: " + gson.toJson(completeTopologyRequestEvent));
+                } catch (Exception e) {
+                    logger.error("Error processing CompleteTopologyRequestEvent event", e);
+                }
+            }
+        });
+
+        eventListenerExecutorService.submit(new Runnable() {
+            public void run() {
+                initializerEventReceiver.execute();
+            }
+        });
+        logger.info("CompleteTopologyRequestEvent event message receiver thread started");
     }
 
     private List<Member> getMembersFromTopology() {
@@ -300,8 +323,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("ApplicationSignUpAddedEvent event received");
                     ApplicationSignUpAddedEvent applicationSignUpAddedEvent = (ApplicationSignUpAddedEvent) event;
                     logger.info("ApplicationSignUpAddedEvent event: " + gson.toJson(applicationSignUpAddedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationSignUpAddedEvent event", e);
                 }
             }
@@ -314,8 +336,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("ApplicationSignUpRemovedEvent event received");
                     ApplicationSignUpRemovedEvent applicationSignUpRemovedEvent = (ApplicationSignUpRemovedEvent) event;
                     logger.info("ApplicationSignUpRemovedEvent event: " + gson.toJson(applicationSignUpRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationSignUpRemovedEvent event", e);
                 }
             }
@@ -339,8 +360,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Artifact updated event received");
                     ApplicationCreatedEvent applicationCreatedEvent = (ApplicationCreatedEvent) event;
                     logger.info("Artifact updated event: " + gson.toJson(applicationCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing artifact updated event", e);
                 }
             }
@@ -353,8 +373,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("ApplicationDeletedEvent event received");
                     ApplicationDeletedEvent applicationDeletedEvent = (ApplicationDeletedEvent) event;
                     logger.info("ApplicationDeletedEvent event: " + gson.toJson(applicationDeletedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationDeletedEvent", e);
                 }
             }
@@ -369,8 +388,7 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationInstanceActivatedEvent) event;
                     logger.info("ApplicationInstanceActivatedEvent event: " +
                             gson.toJson(applicationInstanceActivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationInstanceActivatedEvent", e);
                 }
             }
@@ -385,8 +403,7 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationInstanceCreatedEvent) event;
                     logger.info(
                             "ApplicationInstanceCreatedEvent event: " + gson.toJson(applicationInstanceCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationInstanceCreatedEvent", e);
                 }
             }
@@ -401,8 +418,7 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationInstanceInactivatedEvent) event;
                     logger.info("ApplicationInstanceInactivatedEvent event: " +
                             gson.toJson(applicationInstanceInactivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationInstanceInactivatedEvent", e);
                 }
             }
@@ -417,8 +433,7 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationInstanceTerminatedEvent) event;
                     logger.info(
                             "ApplicationInstanceTerminatedEvent event: " + gson.toJson(applicationInstanceTerminated));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationInstanceTerminatedEvent", e);
                 }
             }
@@ -434,8 +449,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info(
                             "ApplicationInstanceTerminatingEvent event: " +
                                     gson.toJson(applicationInstanceTerminatingEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationInstanceTerminatingEvent", e);
                 }
             }
@@ -451,8 +465,7 @@ public class SampleEventPublisher implements Runnable {
                             (CompleteApplicationsEvent) event;
                     logger.info(
                             "CompleteApplicationsEvent event: " + gson.toJson(completeApplicationsEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing CompleteApplicationsEvent", e);
                 }
             }
@@ -467,8 +480,7 @@ public class SampleEventPublisher implements Runnable {
                             (GroupInstanceActivatedEvent) event;
                     logger.info(
                             "GroupInstanceActivatedEvent event: " + gson.toJson(groupInstanceActivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupInstanceActivatedEvent", e);
                 }
             }
@@ -483,8 +495,7 @@ public class SampleEventPublisher implements Runnable {
                             (GroupInstanceCreatedEvent) event;
                     logger.info(
                             "GroupInstanceCreatedEvent event: " + gson.toJson(groupInstanceCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupInstanceCreatedEvent", e);
                 }
             }
@@ -499,8 +510,7 @@ public class SampleEventPublisher implements Runnable {
                             (GroupInstanceInactivatedEvent) event;
                     logger.info(
                             "GroupInstanceInactivatedEvent event: " + gson.toJson(groupInstanceInactivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupInstanceInactivatedEvent", e);
                 }
             }
@@ -515,8 +525,7 @@ public class SampleEventPublisher implements Runnable {
                             (GroupInstanceTerminatedEvent) event;
                     logger.info(
                             "GroupInstanceTerminatedEvent event: " + gson.toJson(groupInstanceTerminatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupInstanceTerminatedEvent", e);
                 }
             }
@@ -531,8 +540,7 @@ public class SampleEventPublisher implements Runnable {
                             (GroupInstanceTerminatingEvent) event;
                     logger.info(
                             "GroupInstanceTerminatingEvent event: " + gson.toJson(groupInstanceTerminatingEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupInstanceTerminatingEvent", e);
                 }
             }
@@ -546,8 +554,7 @@ public class SampleEventPublisher implements Runnable {
                     GroupMaintenanceModeEvent groupMaintenanceModeEvent = (GroupMaintenanceModeEvent) event;
                     logger.info(
                             "GroupMaintenanceModeEvent event: " + gson.toJson(groupMaintenanceModeEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing GroupMaintenanceModeEvent", e);
                 }
             }
@@ -576,8 +583,7 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterStatusClusterActivatedEvent) event;
                     logger.info("ClusterStatusClusterActivatedEvent event: " +
                             gson.toJson(clusterStatusClusterActivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterActivatedEvent event", e);
                 }
             }
@@ -592,8 +598,7 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterStatusClusterInactivateEvent) event;
                     logger.info("ClusterStatusClusterInactivateEvent event: " +
                             gson.toJson(clusterStatusClusterInactivateEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterInactivateEvent event", e);
                 }
             }
@@ -608,8 +613,7 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterStatusClusterInstanceCreatedEvent) event;
                     logger.info("ClusterStatusClusterInstanceCreatedEvent event: " +
                             gson.toJson(clusterStatusClusterInstanceCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterInstanceCreatedEvent event", e);
                 }
             }
@@ -623,8 +627,7 @@ public class SampleEventPublisher implements Runnable {
                     ClusterStatusClusterResetEvent clusterStatusClusterResetEvent =
                             (ClusterStatusClusterResetEvent) event;
                     logger.info("ClusterStatusClusterResetEvent event: " + gson.toJson(clusterStatusClusterResetEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterResetEvent event", e);
                 }
             }
@@ -639,8 +642,7 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterStatusClusterTerminatedEvent) event;
                     logger.info("ClusterStatusClusterTerminatedEvent event: " +
                             gson.toJson(clusterStatusClusterTerminatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterTerminatedEvent event", e);
                 }
             }
@@ -655,8 +657,7 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterStatusClusterTerminatingEvent) event;
                     logger.info("ClusterStatusClusterTerminatingEvent event: " +
                             gson.toJson(clusterStatusClusterTerminatingEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterStatusClusterTerminatingEvent event", e);
                 }
             }
@@ -683,8 +684,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("DomainMappingAddedEvent event received");
                     DomainMappingAddedEvent domainMappingAddedEvent = (DomainMappingAddedEvent) event;
                     logger.info("DomainMappingAddedEvent event: " + gson.toJson(domainMappingAddedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing DomainMappingAddedEvent event", e);
                 }
             }
@@ -697,8 +697,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("DomainMappingRemovedEvent event received");
                     DomainMappingRemovedEvent domainMappingRemovedEvent = (DomainMappingRemovedEvent) event;
                     logger.info("DomainMappingRemovedEvent event: " + gson.toJson(domainMappingRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing DomainMappingRemovedEvent event", e);
                 }
             }
@@ -720,8 +719,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("MemberFaultEvent event received");
                     MemberFaultEvent memberFaultEvent = (MemberFaultEvent) event;
                     logger.info("MemberFaultEvent event: " + gson.toJson(memberFaultEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing MemberFaultEvent event", e);
                 }
             }
@@ -746,8 +744,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Artifact updated event received");
                     ArtifactUpdatedEvent artifactUpdatedEvent = (ArtifactUpdatedEvent) event;
                     logger.info("Artifact updated event: " + gson.toJson(artifactUpdatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing artifact updated event", e);
                 }
             }
@@ -760,8 +757,7 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Instance cleanup member event received");
                     InstanceCleanupMemberEvent instanceCleanupMemberEvent = (InstanceCleanupMemberEvent) event;
                     logger.info("Instance cleanup member event: " + gson.toJson(instanceCleanupMemberEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing instance cleanup member event", e);
                 }
 
@@ -803,11 +799,9 @@ public class SampleEventPublisher implements Runnable {
                         logger.info(
                                 "Complete tenant event: " + gson.toJson(completeTenantEvent.getTenants(), tenantType));
                         initialized = true;
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         logger.error("Error processing complete tenant event", e);
-                    }
-                    finally {
+                    } finally {
                         TenantManager.releaseReadLock();
                     }
 
@@ -825,11 +819,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Tenant created event received");
                     TenantCreatedEvent tenantCreatedEvent = (TenantCreatedEvent) event;
                     logger.info("Tenant created event: " + gson.toJson(tenantCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing tenant created event", e);
-                }
-                finally {
+                } finally {
                     TenantManager.releaseReadLock();
                 }
             }
@@ -843,11 +835,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Tenant removed event received");
                     TenantRemovedEvent tenantRemovedEvent = (TenantRemovedEvent) event;
                     logger.info("Tenant removed event: " + gson.toJson(tenantRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing tenant removed event", e);
-                }
-                finally {
+                } finally {
                     TenantManager.releaseReadLock();
                 }
             }
@@ -897,11 +887,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Tenant updated event received");
                     TenantUpdatedEvent tenantUpdatedEvent = (TenantUpdatedEvent) event;
                     logger.info("Tenant updated event: " + gson.toJson(tenantUpdatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing tenant updated event", e);
-                }
-                finally {
+                } finally {
                     TenantManager.releaseReadLock();
                 }
             }
@@ -930,11 +918,9 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationClustersCreatedEvent) event;
                     logger.info(
                             "ApplicationClustersCreatedEvent event: " + gson.toJson(applicationClustersCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationClustersCreatedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -950,11 +936,9 @@ public class SampleEventPublisher implements Runnable {
                             (ApplicationClustersRemovedEvent) event;
                     logger.info(
                             "ApplicationClustersRemovedEvent event: " + gson.toJson(applicationClustersRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ApplicationClustersRemovedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -968,11 +952,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Cluster created event received");
                     ClusterCreatedEvent clusterCreatedEvent = (ClusterCreatedEvent) event;
                     logger.info("Cluster created event: " + gson.toJson(clusterCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing cluster created event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -988,11 +970,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterInstanceActivatedEvent) event;
                     logger.info(
                             "ClusterInstanceActivatedEvent event: " + gson.toJson(clusterInstanceActivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterInstanceActivatedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1008,11 +988,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterInstanceCreatedEvent) event;
                     logger.info(
                             "ClusterInstanceCreatedEvent event: " + gson.toJson(clusterInstanceCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterInstanceCreatedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1028,11 +1006,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterInstanceInactivateEvent) event;
                     logger.info(
                             "ClusterInstanceInactivateEvent event: " + gson.toJson(clusterInstanceInactivateEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterInstanceInactivateEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1048,11 +1024,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterInstanceTerminatedEvent) event;
                     logger.info(
                             "ClusterInstanceTerminatedEvent event: " + gson.toJson(clusterInstanceTerminatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterInstanceTerminatedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1068,11 +1042,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterInstanceTerminatingEvent) event;
                     logger.info(
                             "ClusterInstanceTerminatingEvent event: " + gson.toJson(clusterInstanceTerminatingEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterInstanceTerminatingEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1086,11 +1058,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Cluster removed event received");
                     ClusterRemovedEvent clusterRemovedEvent = (ClusterRemovedEvent) event;
                     logger.info("Cluster removed event: " + gson.toJson(clusterRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing cluster removed event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1106,11 +1076,9 @@ public class SampleEventPublisher implements Runnable {
                             (ClusterResetEvent) event;
                     logger.info(
                             "ClusterResetEvent event: " + gson.toJson(clusterResetEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing ClusterResetEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1129,11 +1097,9 @@ public class SampleEventPublisher implements Runnable {
                         logger.info("Complete topology event: " +
                                 gson.toJson(completeTopologyEvent.getTopology().getServices(), serviceType));
                         initialized = true;
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         logger.error("Error processing complete topology event", e);
-                    }
-                    finally {
+                    } finally {
                         TopologyManager.releaseReadLock();
                     }
                 }
@@ -1148,11 +1114,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member activated event received");
                     MemberActivatedEvent memberActivatedEvent = (MemberActivatedEvent) event;
                     logger.info("Member activated event: " + gson.toJson(memberActivatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member activated event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1166,11 +1130,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("MemberCreatedEvent event received");
                     MemberCreatedEvent memberCreatedEvent = (MemberCreatedEvent) event;
                     logger.info("MemberCreatedEvent event: " + gson.toJson(memberCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing MemberCreatedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1184,11 +1146,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("MemberInitializedEvent event received");
                     MemberInitializedEvent memberInitializedEvent = (MemberInitializedEvent) event;
                     logger.info("MemberInitializedEvent event: " + gson.toJson(memberInitializedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing MemberInitializedEvent event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1202,11 +1162,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member maintenance event received");
                     MemberMaintenanceModeEvent memberMaintenanceModeEvent = (MemberMaintenanceModeEvent) event;
                     logger.info("Member maintenance event: " + gson.toJson(memberMaintenanceModeEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member maintenance event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1220,11 +1178,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member ready to shutdown event received");
                     MemberReadyToShutdownEvent memberReadyToShutdownEvent = (MemberReadyToShutdownEvent) event;
                     logger.info("Member ready to shutdown event: " + gson.toJson(memberReadyToShutdownEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member ready to shutdown event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1238,11 +1194,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member started event received");
                     MemberStartedEvent memberStartedEvent = (MemberStartedEvent) event;
                     logger.info("Member started event: " + gson.toJson(memberStartedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member started event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1256,11 +1210,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member suspended event received");
                     MemberSuspendedEvent memberSuspendedEvent = (MemberSuspendedEvent) event;
                     logger.info("Member suspended event: " + gson.toJson(memberSuspendedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member suspended event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1274,11 +1226,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Member terminated event received");
                     MemberTerminatedEvent memberTerminatedEvent = (MemberTerminatedEvent) event;
                     logger.info("Member terminated event: " + gson.toJson(memberTerminatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing member terminated event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1292,11 +1242,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Service created event received");
                     ServiceCreatedEvent serviceCreatedEvent = (ServiceCreatedEvent) event;
                     logger.info("Service created event: " + gson.toJson(serviceCreatedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing service created event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }
@@ -1310,11 +1258,9 @@ public class SampleEventPublisher implements Runnable {
                     logger.info("Service removed event received");
                     ServiceRemovedEvent serviceRemovedEvent = (ServiceRemovedEvent) event;
                     logger.info("Service removed event: " + gson.toJson(serviceRemovedEvent));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     logger.error("Error processing service removed event", e);
-                }
-                finally {
+                } finally {
                     TopologyManager.releaseReadLock();
                 }
             }

@@ -41,6 +41,7 @@ public class MemberInitializedEvent extends TopologyEvent implements SampleEvent
     private String networkPartitionId;
     private String partitionId;
     private String memberId;
+    private String instanceId;
     private List<String> memberPublicIPs;
     private String defaultPublicIP;
     private List<String> memberPrivateIPs;
@@ -130,6 +131,14 @@ public class MemberInitializedEvent extends TopologyEvent implements SampleEvent
         this.defaultPrivateIP = defaultPrivateIP;
     }
 
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
     @XmlElement
     @XmlJavaTypeAdapter(PropertiesAdaptor.class)
     public Properties getProperties() {
@@ -144,7 +153,7 @@ public class MemberInitializedEvent extends TopologyEvent implements SampleEvent
     public void process() {
         org.apache.stratos.messaging.event.topology.MemberInitializedEvent memberInitializedEvent = new org.apache
                 .stratos.messaging.event.topology.MemberInitializedEvent(serviceName, clusterId, clusterInstanceId,
-                memberId, networkPartitionId, partitionId);
+                memberId, networkPartitionId, partitionId, instanceId);
         Utils.publishEvent(memberInitializedEvent);
     }
 }
