@@ -14,6 +14,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <stratos.version>4.1.5</stratos.version>
     </properties>
 
     <repositories>
@@ -103,13 +104,18 @@
         <dependency>
             <groupId>org.apache.stratos</groupId>
             <artifactId>org.apache.stratos.messaging</artifactId>
-            <version>4.1.5-SNAPSHOT</version>
+            <version>${stratos.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>slf4j.wso2</groupId>
                     <artifactId>slf4j</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.stratos</groupId>
+            <artifactId>org.apache.stratos.common</artifactId>
+            <version>${stratos.version}</version>
         </dependency>
     </dependencies>
 
@@ -156,4 +162,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
